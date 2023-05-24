@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import dask.dataframe as dd
+import time
 
 
 class OpenData:
@@ -42,3 +43,13 @@ class OpenData:
         df = dd.read_csv(file_path)
         result = df.compute()
         return result
+
+class Monitor:
+    def time_elapsed(t0, verbose):
+        #seg_min = lambda x : str(round(x,4))+" Seconds" if (x <= 60) else str(round(x/60))+" Minutos "+str(round(x-(x/60),4))+" Seconds"
+        seg_min = lambda seconds : divmod(seconds, 60)
+        minutes, seconds = seg_min(time.time()-t0)
+        if verbose == True:
+            print(f'Running time: {int(minutes)} Minutes and {round(seconds, 4)} Seconds')
+        else:
+            seconds, minutes
