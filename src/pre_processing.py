@@ -46,7 +46,6 @@ class OpenData:
 
 class Monitor:
     def time_elapsed(t0, verbose):
-        #seg_min = lambda x : str(round(x,4))+" Seconds" if (x <= 60) else str(round(x/60))+" Minutos "+str(round(x-(x/60),4))+" Seconds"
         seg_min = lambda seconds : divmod(seconds, 60)
         minutes, seconds = seg_min(time.time()-t0)
         if verbose == True:
