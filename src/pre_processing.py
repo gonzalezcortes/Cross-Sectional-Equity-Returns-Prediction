@@ -1,6 +1,7 @@
 #import pynini
 import numpy as np
 import pandas as pd
+import dask.dataframe as dd
 
 
 class OpenData:
@@ -35,3 +36,9 @@ class OpenData:
 
         df = pd.concat(chunks, axis=0)
         return df
+
+    @staticmethod
+    def read_csv_large(file_path):
+        df = dd.read_csv(file_path)
+        result = df.compute()
+        return result

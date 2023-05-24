@@ -15,4 +15,5 @@
 <p>If you have any questions or issues with the code in this repository, please feel free to contact me at d.gonzalezcortes@opendeusto.es.</p>
 
 <h3> Data Sources </h3>
+<p> The data is not attached in this repository, however can be found in the following link:</p>
 <p>https://dachxiu.chicagobooth.edu/download/datashare.zip</p>
