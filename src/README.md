@@ -2,11 +2,11 @@
 ## Pre Processing
 The file pre_processing.py contains three classes:
 
-OpenData: Provides methods for reading and manipulating CSV data.
+    OpenData: Provides methods for reading and manipulating CSV data.
 
-WrdsData: Interacts with the WRDS (Wharton Research Data Services) database to retrieve information about libraries and tables.
+    WrdsData: Interacts with the WRDS (Wharton Research Data Services) database to retrieve information about libraries and tables.
 
-Monitor: Measures and displays the running time of a code segment
+    Monitor: Measures and displays the running time of a code segment
 
 
 ## Simulation
