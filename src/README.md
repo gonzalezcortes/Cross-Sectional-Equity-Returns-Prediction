@@ -1,9 +1,17 @@
+
+## Pre Processing
+The file pre_processing.py contains three classes:
+
+OpenData: Provides methods for reading and manipulating CSV data.
+
+WrdsData: Interacts with the WRDS (Wharton Research Data Services) database to retrieve information about libraries and tables.
+
+Monitor: Measures and displays the running time of a code segment
+
+
 ## Simulation
 
-This repository contains a Python implementation of the simulation code for generating Xi datasets.
-Introduction
-
-The simulation code generates synthetic datasets following the work of the paper "Empirical Asset Pricing via Machine Learning" (2018) model from  Shihao Gu, Bryan Kelly and Dacheng Xiu, specifically for two cases: Pc=50 and Pc=100. The datasets are generated using various parameters such as N, m, T, and other simulation parameters.
+The file simulated_datasets.py contains a Python implementation of the simulation code for generating datasets.The code generates synthetic datasets following the work of the paper "Empirical Asset Pricing via Machine Learning" (2018) from  Shihao Gu, Bryan Kelly and Dacheng Xiu, specifically for two cases: Pc=50 and Pc=100. The datasets are generated using various parameters such as N, m, T, and other simulation parameters.
 Requirements
 
 Usage
@@ -42,3 +50,7 @@ The simulation code will generate the following datasets:
 Source:
 
 https://github.com/xiubooth/ML_Codes
+
+## FST converter
+
+This code snippet demonstrates how to read an FST (Faster Serialization Format) file, convert it to a data frame, and save it as a CSV file. It assumes the presence of the fst library in R.
