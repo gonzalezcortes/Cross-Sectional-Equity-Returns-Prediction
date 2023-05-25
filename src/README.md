@@ -3,7 +3,7 @@
 This repository contains a Python implementation of the simulation code for generating Xi datasets.
 Introduction
 
-The simulation code generates synthetic datasets for the paper Empirical Asset Pricing via Machine Learning" (2018) model from  Shihao Gu, Bryan Kelly and Dacheng Xiu, specifically for two cases: Pc=50 and Pc=100. The datasets are generated using various parameters such as N, m, T, and other simulation parameters.
+The simulation code generates synthetic datasets following the work of the paper "Empirical Asset Pricing via Machine Learning" (2018) model from  Shihao Gu, Bryan Kelly and Dacheng Xiu, specifically for two cases: Pc=50 and Pc=100. The datasets are generated using various parameters such as N, m, T, and other simulation parameters.
 Requirements
 
 Usage
