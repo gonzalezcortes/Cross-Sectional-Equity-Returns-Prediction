@@ -51,6 +51,17 @@ Source:
 
 https://github.com/xiubooth/ML_Codes
 
+## Generate quarterly, half-year, and annual returns
+
+generate_returns.py processes raw return data and generates quarterly, half-year, and annual returns.
+
+
+    This script iterates over two datasets, SimuData_p50 and SimuData_p100, stored in the SimulatedData directory. For each dataset, it performs the following steps:
+
+        Load the raw return data from the .csv file.
+        For each unique period in the data, it calculates quarterly, half-year, and annual returns.
+        Outputs these returns along with their respective time period into new .csv files, saved in the same folder.
+
 ## FST converter
 
 This code snippet demonstrates how to read an FST (Faster Serialization Format) file, convert it to a data frame, and save it as a CSV file. It assumes the presence of the fst library in R.
