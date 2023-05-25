@@ -1,4 +1,3 @@
-#import pynini
 import numpy as np
 import pandas as pd
 import dask.dataframe as dd
@@ -7,12 +6,7 @@ import wrds
 
 
 class OpenData:
-    """
-    @staticmethod
-    def fst_read(file_path):
-        fst = pynini.Fst.read(file_path)
-        return fst
-    """
+
     @staticmethod
     def read_csv(file_path):
         data = np.genfromtxt(file_path, delimiter=',', names=True, dtype=None)
@@ -45,6 +39,15 @@ class OpenData:
         result = df.compute()
         return result
 
+    @staticmethod
+    def filter_data_n_stocks_random(df, column, n):
+        unique_values = df[column].unique()
+        if len(unique_values) < n:
+            raise ValueError(f'The dataframe contains fewer than {n} unique values in the specified column.')
+    
+        random_values = np.random.choice(unique_values, n, replace=False)
+        return df[df[column].isin(random_values)]
+
 
 class WrdsData:
     def __init__(self):
@@ -67,9 +70,6 @@ class WrdsData:
             np.savetxt(message, table_lists, fmt="%s")
         else:
             return table_lists
-
-
-
 
     def get_data(assets):
         return assets
