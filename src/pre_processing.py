@@ -55,6 +55,22 @@ class WrdsData:
         except Exception as e:
             print(f"Failed to connect to WRDS DB. Error: {e}")
 
+    def get_libraries(self):
+        libraries = self.db.list_libraries()
+        libraries_array = np.array(libraries, dtype=str)
+        np.savetxt('data/WRDS_libraries.txt', libraries_array, fmt="%s")
+
+    def get_tables(self, table, save):
+        table_lists = self.db.list_tables(table)
+        if save == True:
+            message = "data/table_list_"+str(table)+".txt"
+            np.savetxt(message, table_lists, fmt="%s")
+        else:
+            return table_lists
+
+
+
+
     def get_data(assets):
         return assets
 
