@@ -9,6 +9,7 @@
   <li><strong>models:</strong> Trained machine learning models saved in various formats.</li>
   <li><strong>src:</strong> Contains the source code for various utility functions and modules used in the analysis.
   <li><strong>results:</strong> Reports and visualizations of the results obtained from the different models.</li>
+  <li><strong> SimulatedData:</strong> folder contains synthetic datasets used for calculating quarterly, half-yearly, and annual financial returns using Python scripting.
 </ul>
 
 <h2>Contact</h2>
