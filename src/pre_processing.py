@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import dask.dataframe as dd
 import time
+import wrds
 
 
 class OpenData:
@@ -43,6 +44,19 @@ class OpenData:
         df = dd.read_csv(file_path)
         result = df.compute()
         return result
+
+
+class WrdsData:
+    def __init__(self):
+        self.db = None
+        try:
+            self.db = wrds.Connection()
+            print("Connection to WRDS DB successful")
+        except Exception as e:
+            print(f"Failed to connect to WRDS DB. Error: {e}")
+
+    def get_data(assets):
+        return assets
 
 class Monitor:
     def time_elapsed(t0, verbose):
