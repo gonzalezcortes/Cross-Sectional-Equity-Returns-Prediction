@@ -1,30 +1,89 @@
 import sys
 import time
+import numpy as np
+import pandas as pd
 
 t0 = time.time()
 sys.path.append('src/')
 
 from pre_processing import OpenData, Monitor, WrdsData
-
+from training import getXY, Metrics
+from models import RF
 
 Monitor.time_elapsed(t0,True)
+"""
 
-data = OpenData.read_csv_large('data/datashare.csv')
+data = OpenData.read_csv_large('data/data_bigcharMat.csv')
+data = np.array(data)[0:21696000]  #50 stocks
+data = np.squeeze(data)
 
-#data = OpenData.read_csv_chunks('data/datashare.csv')
+exRet = OpenData.read_csv_pandas(path = 'data/data_mRetPerc.csv', header = None)
+exRet = np.array(exRet)
+exRet = np.reshape(exRet, (480,501)) #reshape to orignal size
+exRet = exRet[:, :50]  #50 stocks
 
-unique_stocks = set(data['permno'])
-print(f'This dataset has {len(unique_stocks)} uniques stocks out of {len(data)} observations')
+dates = OpenData.read_csv_pandas(path = 'data/dates.csv', header = None)
+dates = np.array(dates)
+stocks = OpenData.read_csv_pandas(path = 'data/permno.csv', header = None)
+stocks = np.array(stocks)[0:50]  #50 stocks
 
-print(unique_stocks)
+n_stocks = len(stocks)
+n_dates = len(dates)
+n_char = 904
 
-#db = WrdsData()
-#libraries = db.get_libraries()
+print(n_dates, n_char, n_stocks)
 
-data_filtered = OpenData.filter_data_n_stocks_random(data, 'permno', 100)
+##### Transform data set #####
 
-## Create data for this
+chars = ['x_' + str(i) for i in range(n_char)] #title for the Characteristic
+dates_indices = np.tile(np.repeat(dates, n_char), n_stocks)
+char_indices = np.tile(chars, n_dates * n_stocks)
+stocks_indices = np.repeat(stocks, n_dates * n_char)
+print(dates_indices.shape,char_indices.shape,data.shape, stocks_indices.shape)
+
+dataFrame = pd.DataFrame({'Date': dates_indices,'Characteristic': char_indices,'Value': data, 'Stock': stocks_indices})
+print(dataFrame.head())
+
+dataFrame = dataFrame.pivot_table(index=['Date','Stock'], columns='Characteristic', values='Value')
+dataFrame = dataFrame.reset_index()
+print(dataFrame.head())
+
+data = dataFrame.values #transform it to numpy
+
+print(data.shape)
+print(exRet.shape)
+
+"""
+### get X and y in a rolling widonw ###
+
+## Start --> 30 % training and 20% testing ##
+array0 = np.random.rand(10, 4)
+array1 = np.random.rand(10, 1)
 
 
+steps = 2 #training is increased by 2
+step_training = 2 #considers 1 period for testing
+iterator = getXY(array0, array1, steps)
+
+### training - Only 3 periods (validation is missing) ###
+#check possible data leakage
+
+for i in range(3):
+        
+    predictor = RF(n_estimators=100)
+    
+    X_train, y_train = iterator.get_next()
+
+    predictor.train(X_train, y_train)
+    X_test, y_test = iterator.get_next_test(step_training)
+
+
+    predictions = predictor.predict(X_test)
+
+    r2 = Metrics.r2(y_test, predictions)
+
+    print(y_test)
+    print(predictions)
+    print(r2)
 
 Monitor.time_elapsed(t0,True)

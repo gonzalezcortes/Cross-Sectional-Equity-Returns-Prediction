@@ -13,6 +13,11 @@ class OpenData:
         return data
 
     @staticmethod
+    def read_csv_pandas(path, header):
+        data = pd.read_csv(path, header = header)
+        return data
+
+    @staticmethod
     def read_csv_columns(file_path):
         df = pd.read_csv(file_path, nrows=0)
         return df.columns

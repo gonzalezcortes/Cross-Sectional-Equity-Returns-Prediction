@@ -365,6 +365,7 @@ FodyWeavers.xsd
 # Ignore data folder
 /data/
 /.vs/
+/presentation_texts/
 
 # Ignore R history files history and data
 .Rhistory
