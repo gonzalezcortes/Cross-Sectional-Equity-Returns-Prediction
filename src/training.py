@@ -41,3 +41,23 @@ class Metrics:
         if np.ndim(y_pred) > 1:
             y_pred = np.squeeze(y_pred)
         return r2_score(y_real, y_pred)
+
+    @staticmethod
+    def calculate_returns(prices):
+        returns = np.diff(prices) / prices[:-1]
+        return returns
+
+    @staticmethod
+    def get_log_returns(data):
+        log_returns = np.log(1 + data)  
+        return log_returns
+
+    @staticmethod
+    def calculate_cumulative_returns(returns):
+        cumulative_returns = np.cumprod(1 + returns) - 1  
+        return cumulative_returns
+
+    @staticmethod
+    def calculate_cumulative_log_returns(returns):
+        cumulative_log_returns = np.cumsum(np.log(1 + returns)) 
+        return cumulative_log_returns
