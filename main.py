@@ -2,13 +2,15 @@ import sys
 import time
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 t0 = time.time()
 sys.path.append('src/')
 
 from pre_processing import OpenData, Monitor, WrdsData
 from training import getXY, Metrics
-from models import RF
+from portfolio import PortfolioZeroNet, PortfolioEquWei
+from models import RF, LR, XGB
 
 Monitor.time_elapsed(t0,True)
 
@@ -61,35 +63,81 @@ print(exRet.shape)
 ### get X and y in a rolling widonw ###
 ## Start --> 30 % training and 20% testing ##
 #Random Data for testing
-#array0 = np.random.rand(10, 4)
-#array1 = np.random.rand(10, 1)
+
+#array0 = np.random.rand(24000, 1)
+#array1 = np.random.rand(24000)
 
 
 steps = 50 #training is increased by n
 step_training = 50 #considers n period for testing
-iterator = getXY(data, exRet, steps) #X, y
+perc_start = 0.3 #Start with 30%
 
-print("exRet.shape ", exRet.shape)
+#iterator = getXY(array0, array1, perc_start, steps) #X, y
+iterator = getXY(data, exRet, perc_start, steps) #X, y
+
+#print("exRet.shape ", exRet.shape)
 
 ### training - Only 3 periods (validation is missing) ###
 #check possible data leakage
 
-predictor = RF(n_estimators=100)
-days = 3 #480
+predictor_0 = RF(n_estimators=100)
+predictor_1 = LR()
+predictor_2 = XGB()
+
+days = 100 # 480 days
+predictionsArray_1 = []
+predictionsArray_2 = []
+realArray = []
+
 for i in range(days):
     
     X_train, y_train = iterator.get_next()
     X_test, y_test = iterator.get_next_test(step_training)
 
-    predictor.train(X_train, y_train)
-    predictions = predictor.predict(X_test)
+    predictor_1.train(X_train, y_train)
+    predictions_1 = predictor_1.predict(X_test)
 
-    r2 = Metrics.r2(y_test, predictions)
+    predictionsArray_1.append(predictions_1)
+    r2_1 = Metrics.r2(y_test, predictions_1)
+    
+    predictor_2.train(X_train, y_train)
+    predictions_2 = predictor_2.predict(X_test)
 
-    #print(y_test)
-    #print(predictions)
-    print(r2)
+    predictionsArray_2.append(predictions_2)
+    r2_2 = Metrics.r2(y_test, predictions_2)
 
+    realArray.append(y_test)
 
+    print(i, r2_1, r2_2)
 
-Monitor.time_elapsed(t0,True)
+### Portfolio ###
+
+predictionsDataFrame_1 = pd.DataFrame(np.reshape(predictionsArray_1, (steps, days)))
+predictionsDataFrame_2 = pd.DataFrame(np.reshape(predictionsArray_2, (steps, days)))
+realDataFrame = pd.DataFrame(np.reshape(realArray, (steps, days)))
+
+port_zn_1 = PortfolioZeroNet(realDataFrame, predictionsDataFrame_1)
+port_zn_2 = PortfolioZeroNet(realDataFrame, predictionsDataFrame_2)
+port_eq = PortfolioEquWei(realDataFrame)
+#print(realDataFrame)
+
+#print(port_zn.cumulative_returns_of_holdings())
+#print(port_eq.mean_returns())
+
+x1 = port_zn_1.cumulative_returns_of_holdings()
+x2 = port_zn_2.cumulative_returns_of_holdings()
+x3 = port_eq.calculate_cumulative_log_returns()
+
+index = list(range(days))
+plt.plot(index, x1, 'b', label='Predicted LR')
+plt.plot(index, x2, 'g', label='Predicted XGB')
+plt.plot(index, x3, 'r', label='Equally weighted')
+
+plt.xlabel('Time')
+plt.ylabel('Values')
+
+plt.legend()
+
+plt.title('Cumulative Portfolio log Returns')
+
+plt.show()

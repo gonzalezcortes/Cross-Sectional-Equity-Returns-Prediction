@@ -4,12 +4,13 @@ import pandas as pd
 from sklearn.metrics import r2_score
 
 class getXY:
-    def __init__(self, X, y, steps):
+    def __init__(self, X, y, perc_start, steps):
         #self.arrays = [array1, array2]
         self.X = X
         self.y = y
+        start = int(len(X)*perc_start)
         self.arrays = [X, y]
-        self.indices = [0, 0] 
+        self.indices = [start, start] 
         self.steps = steps
 
     def get_next(self):
@@ -41,23 +42,3 @@ class Metrics:
         if np.ndim(y_pred) > 1:
             y_pred = np.squeeze(y_pred)
         return r2_score(y_real, y_pred)
-
-    @staticmethod
-    def calculate_returns(prices):
-        returns = np.diff(prices) / prices[:-1]
-        return returns
-
-    @staticmethod
-    def get_log_returns(data):
-        log_returns = np.log(1 + data)  
-        return log_returns
-
-    @staticmethod
-    def calculate_cumulative_returns(returns):
-        cumulative_returns = np.cumprod(1 + returns) - 1  
-        return cumulative_returns
-
-    @staticmethod
-    def calculate_cumulative_log_returns(returns):
-        cumulative_log_returns = np.cumsum(np.log(1 + returns)) 
-        return cumulative_log_returns
