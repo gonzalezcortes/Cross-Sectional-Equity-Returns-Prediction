@@ -56,9 +56,10 @@ dataFrame = dataFrame.reset_index()
 #print(dataFrame.head())
 
 data = dataFrame.values #transform it to numpy
+print(data.head())
 print(data.shape)
 print(exRet.shape)
-
+print(exRet.head())
 
 ### get X and y in a rolling widonw ###
 ## Start --> 30 % training and 20% testing ##
