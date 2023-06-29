@@ -371,3 +371,7 @@ FodyWeavers.xsd
 # Ignore R history files history and data
 .Rhistory
 .RData
+.RDataTmp
+.RDataTmp1
+.RDataTmp2
+.RDataTmp3
