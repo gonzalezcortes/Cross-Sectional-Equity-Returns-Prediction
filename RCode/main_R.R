@@ -1,9 +1,11 @@
 #####   R code  #####
 ##### June 2023 #####
-path <- 'G:/My Drive/Research Papers/Cross Sectional Equity Returns 2023'
-setwd(path)
-source('RCode/src/preProcessing.R')
-source('RCode/src/sampleSplitting.R')
+path <- getwd()
+print(path)
+setwd(path) #set path
+
+source('src/preProcessing.R')
+source('src/sampleSplitting.R')
 
 ##### Open Data #####
 n_dates <- 480 #Number of Months
@@ -12,13 +14,14 @@ n_stocks <- 501 #Number of Stocks
 
 #df_pivot <- get_data(n_dates, n_char, n_stocks) #function to get the data
 df_pivot <- load_transformed_data() #load data that was already saved
-dates <- as.vector(unique(df_pivot$Date))
-stocks <- as.vector(unique(df_pivot$Stock))
+df_pivot$Date <- as.Date(as.character(df_pivot$Date), format = "%Y%m%d") #Convert to date format
+dates <- unique(df_pivot$Date)
+stocks <- unique(df_pivot$Stock)
+returns <- get_returns(dates, stocks)
 
 ##### Training #####
 # Sample splitting
-# The procedure cyclically grows the training sample, refits the model annually,
-# and uses it for predictions over the next year.
+# The procedure cyclically grows the training sample, refits the model annually,and uses it for predictions over the next year.
 # The (first) training sample, comprising of the first 30% observations. (144 months)
 training_first <- 144
 # A validation sample, retaining the next 20%. (96) -> (144+96)
@@ -32,12 +35,14 @@ training_stop <- n_dates-validation_step-testing_step
 #refitting the entire model once per year
 for (month_index in seq(training_first, training_stop, by = 12)){
   iterations = iterations + 1
-  # training will finish in month_index
-  training_start <- month_index-training_first
-  validation_end <- month_index+validation_step
-  testing_stop <- month_index+validation_step+testing_step
-  print(paste0(iterations, " - ",training_start, " - " , month_index, " - ",
-               validation_end," - ",testing_stop))
+  samples <- get_samples(df_pivot, returns, month_index, training_first, validation_step, testing_step)
   
+  training_sample <- samples[[1]]
+  validation_sample <- samples[[2]]
+  testing_sample <- samples[[3]]
+  
+  ####El validation test period está malo
+  print("------------------")
+  print("------------------")
 }
 
