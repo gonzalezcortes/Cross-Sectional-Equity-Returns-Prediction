@@ -14,19 +14,21 @@ get_samples <- function(df, returns, month_index, training_first, validation_ste
   testing_start <- validation_end + 1
   testing_end <- month_index+validation_step+testing_step
   
-  print(paste0(dates[training_start],' - ', dates[training_end],' - ', 
-               dates[validation_start],' - ',dates[validation_end],' - ',
-               dates[testing_start],' - ', dates[testing_end]))
+  df$Y <- returns$Returns
+  
   
   training_sample <- df %>% filter(Date >= dates[training_start]
-                                   & Date <= dates[training_end])
+                                   & Date <= dates[training_end]) %>% as.data.frame()
   
   validation_sample <- df %>% filter(Date >= dates[validation_start]
-                                   & Date <= dates[validation_end])
+                                   & Date <= dates[validation_end]) %>% as.data.frame()
   
-  testing_sample <- returns %>% filter(Date >= dates[testing_start]
-                                   & Date <= dates[testing_end])
+  testing_sample <- df %>% filter(Date >= dates[testing_start]
+                                   & Date <= dates[testing_end]) %>% as.data.frame()
   
-  return(list(training_sample, validation_sample, testing_sample))
+  
+  return(list("training" = training_sample, "validation" = validation_sample, 
+              "testing" = testing_sample))
+  
   
 }

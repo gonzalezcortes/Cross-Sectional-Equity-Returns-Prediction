@@ -1,11 +1,14 @@
 #####   R code  #####
 ##### June 2023 #####
-path <- getwd()
-print(path)
-setwd(path) #set path
+library(rstudioapi)
+# Getting the path of your current open file
+current_path = rstudioapi::getActiveDocumentContext()$path
+setwd(dirname(current_path )) #set path
 
 source('src/preProcessing.R')
 source('src/sampleSplitting.R')
+source('src/trainingModels.R')
+source('src/metrics.R')
 
 ##### Open Data #####
 n_dates <- 480 #Number of Months
@@ -32,17 +35,31 @@ iterations <- 0
 
 #training_sample, validation_sample, testing_sample
 training_stop <- n_dates-validation_step-testing_step
+
 #refitting the entire model once per year
+model_1_predictions <- c()
+
 for (month_index in seq(training_first, training_stop, by = 12)){
   iterations = iterations + 1
+  print(paste0("Iteration ",iterations))
   samples <- get_samples(df_pivot, returns, month_index, training_first, validation_step, testing_step)
-  
-  training_sample <- samples[[1]]
-  validation_sample <- samples[[2]]
-  testing_sample <- samples[[3]]
-  
-  ####El validation test period está malo
-  print("------------------")
-  print("------------------")
+
+  predictions <- ols_model(samples)
+
+  model_1_predictions <- c(model_1_predictions, predictions)
+
 }
+
+##### Save data ###
+
+model_1_predictions.csv(df_pivot, "data/model_1_predictions.csv", row.names=FALSE)
+
+##### Metrics #####
+##### r2 #####
+
+#r2()
+
+##### Portfolio #####
+
+#
 
