@@ -8,7 +8,7 @@ setwd(dirname(current_path )) #set path
 source('src/preProcessing.R')
 source('src/sampleSplitting.R')
 source('src/trainingModels.R')
-source('src/metrics.R')
+
 
 ##### Open Data #####
 n_dates <- 480 #Number of Months
@@ -36,30 +36,32 @@ iterations <- 0
 #training_sample, validation_sample, testing_sample
 training_stop <- n_dates-validation_step-testing_step
 
-#refitting the entire model once per year
-model_1_predictions <- c()
+##refitting the entire model once per year
+#real_values <- c()
+real_dates <- as.Date(character())
+real_stocks <- c()
+
+model_1_predictions <- c() 
 
 for (month_index in seq(training_first, training_stop, by = 12)){
   iterations = iterations + 1
   print(paste0("Iteration ",iterations))
   samples <- get_samples(df_pivot, returns, month_index, training_first, validation_step, testing_step)
-
+  
+  #real_values <- c(real_values, samples$testing$Y)
+  real_dates <- c(real_dates, as.Date(samples$testing$Date))
+  real_stocks <- c(real_stocks, samples$testing$Stock)
+  
   predictions <- ols_model(samples)
-
   model_1_predictions <- c(model_1_predictions, predictions)
-
+  
 }
 
 ##### Save data ###
+#df_real <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(real_values))
+#write.csv(df_real, "../data/actual_testing_values.csv", row.names=TRUE)
 
-model_1_predictions.csv(df_pivot, "data/model_1_predictions.csv", row.names=FALSE)
 
-##### Metrics #####
-##### r2 #####
-
-#r2()
-
-##### Portfolio #####
-
-#
+df_m1 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_1_predictions))
+write.csv(df_m1, "../data/model_1_predictions.csv", row.names=TRUE)
 

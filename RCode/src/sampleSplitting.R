@@ -16,7 +16,6 @@ get_samples <- function(df, returns, month_index, training_first, validation_ste
   
   df$Y <- returns$Returns
   
-  
   training_sample <- df %>% filter(Date >= dates[training_start]
                                    & Date <= dates[training_end]) %>% as.data.frame()
   
@@ -29,6 +28,4 @@ get_samples <- function(df, returns, month_index, training_first, validation_ste
   
   return(list("training" = training_sample, "validation" = validation_sample, 
               "testing" = testing_sample))
-  
-  
 }
