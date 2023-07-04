@@ -116,6 +116,8 @@ for i in range(days):
 predictionsDataFrame_1 = pd.DataFrame(np.reshape(predictionsArray_1, (steps, days)))
 predictionsDataFrame_2 = pd.DataFrame(np.reshape(predictionsArray_2, (steps, days)))
 realDataFrame = pd.DataFrame(np.reshape(realArray, (steps, days)))
+print(realArray.shape)
+print(realDataFrame.shape)
 
 port_zn_1 = PortfolioZeroNet(realDataFrame, predictionsDataFrame_1)
 port_zn_2 = PortfolioZeroNet(realDataFrame, predictionsDataFrame_2)
