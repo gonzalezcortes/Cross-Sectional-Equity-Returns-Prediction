@@ -37,7 +37,7 @@ iterations <- 0
 training_stop <- n_dates-validation_step-testing_step
 
 ##refitting the entire model once per year
-#real_values <- c()
+real_values <- c()
 real_dates <- as.Date(character())
 real_stocks <- c()
 
@@ -48,7 +48,7 @@ for (month_index in seq(training_first, training_stop, by = 12)){
   print(paste0("Iteration ",iterations))
   samples <- get_samples(df_pivot, returns, month_index, training_first, validation_step, testing_step)
   
-  #real_values <- c(real_values, samples$testing$Y)
+  real_values <- c(real_values, samples$testing$Y)
   real_dates <- c(real_dates, as.Date(samples$testing$Date))
   real_stocks <- c(real_stocks, samples$testing$Stock)
   
@@ -58,10 +58,10 @@ for (month_index in seq(training_first, training_stop, by = 12)){
 }
 
 ##### Save data ###
-#df_real <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(real_values))
-#write.csv(df_real, "../data/actual_testing_values.csv", row.names=TRUE)
+df_real <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(real_values))
+write.csv(df_real, "../results/actual_testing_values.csv", row.names=TRUE)
 
 
 df_m1 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_1_predictions))
-write.csv(df_m1, "../data/model_1_predictions.csv", row.names=TRUE)
+write.csv(df_m1, "../results/model_1_predictions.csv", row.names=TRUE)
 
