@@ -58,12 +58,12 @@ for (month_index in seq(training_first, training_stop, by = 12)){
   
   predictions <- ols_model(samples)
   model_2_predictions <- c(model_2_predictions, predictions)
-  
+  print(predictions)
 }
 
 ##### Save data ###
-df_real <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(real_values))
-write.csv(df_real, "../results/actual_testing_values.csv", row.names=TRUE)
+#df_real <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(real_values))
+#write.csv(df_real, "../results/actual_testing_values.csv", row.names=TRUE)
 
 
 #df_m1 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_1_predictions))

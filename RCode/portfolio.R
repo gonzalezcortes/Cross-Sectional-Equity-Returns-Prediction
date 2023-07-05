@@ -14,15 +14,19 @@ actual_values <- read.csv(file = "../results/actual_x.csv", header = TRUE)
 actual_values$Date <- as.Date(actual_values$Date)
 
 m1 <- read.csv(file = "../results/model_x.csv", header = TRUE)
-m1$Date <-as.Date(m1$Date)
-
+#m1$Date <- as.Date(m1$Date)
+m1$Date <- actual_values$Date
 
 ### r2 per Year ###
 #r2PerYear(m1, actual_values, years)
 
 ### Portfolio ###
-eq <- equally_weighted_portfolio(returns = actual_values, plot = TRUE)
+eq <- equally_weighted_portfolio(returns = actual_values)
 
+ze <- zero_net_portfolio(actual_returns = actual_values, predicted_returns = m1)
 
-plot_portfolio(eq)
+##plot_portfolio(eq)
+#plot_two_portfolios(ze)
+
+plot_two_portfolios(c("Eq W", "M1"),eq, ze)
 

@@ -19,25 +19,11 @@ r2PerYear <- function(predicted_df, actual_df, years){
   print(summary(r2_a))
 }
 
-
 calculate_cumulative_log_returns = function(mean_returns) {
   log_returns <- log(1 + mean_returns)
   cumulative_log_returns <- cumsum(log_returns)
   return(cumulative_log_returns)
 }
-
-equally_weighted_portfolio <- function(returns){
-  months <- unique(as.Date(returns$Date))
-  a_returns <- c()
-  for (month in months){
-    month <- as.Date(month)
-    print(month)
-    df_filtered <- returns %>% filter(Date %in% month)
-    a_returns <- c(a_returns, mean(df_filtered$Values))
-  }
-  return(calculate_cumulative_log_returns(a_returns))
-}
-
 
 plot_portfolio <- function(eq){
   df <- data.frame(index = 1:length(eq), value = eq)
@@ -51,16 +37,122 @@ plot_portfolio <- function(eq){
                        labels = seq(from = 1998, to = 2016, by = 2))
 }
 
-calculate_deciles <- function(pred_returns) {
-  data <- data.frame(pred_returns)
+plot_two_portfolios <- function(labels, eq, eq2){
+  df <- data.frame(index = 1:length(eq), value = eq, value2 = eq2)
+  
+  ggplot(df, aes(x = index)) +
+    geom_line(aes(y = value, colour = labels[1])) +
+    geom_line(aes(y = value2, colour = labels[2])) +
+    labs(x = "Year", 
+         y = "Cumulative Log Return", 
+         title = "Cumulative Portfolio", 
+         colour = "Portfolio") +
+    scale_x_continuous(breaks = seq(from = 13, to = max(df$index), by = 24), 
+                       labels = seq(from = 1998, to = 2016, by = 2)) +
+    theme(legend.position = "bottom", 
+          legend.background = element_rect(fill = "white", colour = "black"), 
+          legend.box.background = element_rect(colour = "black"))
+}
+
+
+
+calculate_deciles <- function(labels, returns) {
+  data <- data.frame(returns)
   deciles <- lapply(data, function(x) {
     cut(x, breaks = quantile(x, probs = seq(0, 1, by = 0.1)), include.lowest = TRUE, labels = FALSE)
   })
-  deciles <- as.data.frame(deciles)
-  return(deciles)
+  deciles_matrix <- do.call(cbind, deciles)  # Convert list to matrix
+  deciles_df <- data.frame(Stock = labels, deciles_matrix)
+  names(deciles_df)[-1] <- "Deciles"# Rename
+  
+  return(deciles_df)
 }
 
-vc <- c(3,4,1,2,8)
-f <- calculate_deciles(vc)
-f
+buy_sell <- function(pred_returns) {
+  deciles <- calculate_deciles(pred_returns)
+  
+  holdings <- list(buy = list(), sell = list())
+  
+  for (day in 1:ncol(deciles)) {
+    to_buy <- which(deciles[, day] == 10)  # Decile 10 (1-indexed)
+    to_sell <- which(deciles[, day] == 1)  # Decile 1
+    holdings$buy[[day]] <- to_buy
+    holdings$sell[[day]] <- to_sell
+  }
+  
+  return(holdings)
+}
+
+############################
+####     Portfolios     ####
+############################
+
+equally_weighted_portfolio <- function(returns){
+  months <- unique(as.Date(returns$Date))
+  a_returns <- c()
+  for (month in months){
+    month <- as.Date(month)
+    print(month)
+    df_filtered <- returns %>% filter(Date %in% month)
+    print(mean(df_filtered$Values))
+    a_returns <- c(a_returns, mean(df_filtered$Values))
+  }
+  return(calculate_cumulative_log_returns(a_returns))
+}
+
+zero_net_portfolio <- function(actual_returns, predicted_returns){
+  months <- unique(as.Date(predicted_returns$Date))
+  #holdings <- list(buy = list(), sell = list())
+  #list_holding <- c()
+  a_returns <- c()
+  for (month in months){
+    month <- as.Date(month)
+    print(month)
+    
+    df_filtered <- predicted_returns %>% filter(Date %in% month)
+    
+    ### Get deciles ###
+    deciles <- calculate_deciles(df_filtered$Stock, df_filtered$Values)
+    #print(deciles)
+    
+    #get buy and sell portfolio 
+    to_buy <- which(deciles$Deciles == 10)  
+    to_sell <- which(deciles$Deciles == 1)
+    
+    holdings_long <- deciles$Stock[to_buy]
+    #print(length(holdings_long))
+    
+    ### Get returns ###
+    actual_filtered <- actual_returns %>% filter(Date %in% month)
+    returns_holding <- actual_filtered  %>% filter(Stock %in% holdings_long) #actual_values
+    #print(returns_holding)
+    
+    print(mean(returns_holding$Values))
+    a_returns <- c(a_returns, mean(returns_holding$Values))
+    
+  }
+  return(calculate_cumulative_log_returns(a_returns))
+  #return(calculate_cumulative_log_returns(a_returns))
+}
+
+
+######## Sin usar ########
+a <- c("a1","b1","c1","d1","e1","f1","g1","f1","h1")
+b <- c(80,20,30,40,50,0,60,80,100)
+
+d1 <- data.frame("a" = a, "b" = b)
+d2 <- calculate_deciles(d1$a, d1$b)
+#print(d2)
+
+#to_buy <- which(d2$returns == 10)
+#d1$a[to_buy]
+
+#holdings <- list(buy = list(), sell = list())
+
+#holdings$buy[["Lunes"]] <- to_buy
+#holdings$buy[["Lunes"]] <- c(3,6)
+#holdings$buy[["Martes"]] <- to_buy
+
+#holdings
+
 
