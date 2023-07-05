@@ -58,7 +58,7 @@ for (month_index in seq(training_first, training_stop, by = 12)){
   
   predictions <- ols_model(samples)
   model_2_predictions <- c(model_2_predictions, predictions)
-  print(predictions)
+  
 }
 
 ##### Save data ###
