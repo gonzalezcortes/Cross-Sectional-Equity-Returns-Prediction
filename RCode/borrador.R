@@ -1,56 +1,57 @@
-# Load necessary libraries
 library(ranger)
-#install.packages("devtools")
-#install.packages("caret")
-library(caret)
 
+num.trees <- c(100, 200, 500)
+mtry <- c(2, 3, 4)
 
-# Use mtcars dataset, predicting mpg based on all other variables
-data(mtcars)
+best.model <- NULL
+best.accuracy <- 0
 
-# Split data into training, validation, and test sets
-set.seed(123)
-trainIndex <- createDataPartition(mtcars$mpg, p = .6, list = FALSE, times = 1)
-trainSet <- mtcars[ trainIndex,]
-tempSet <- mtcars[-trainIndex,]
+set.seed(42)
 
-# Split the remaining data to validation and test sets
-validIndex <- createDataPartition(tempSet$mpg, p = .5, list = FALSE, times = 1)
-validSet <- tempSet[ validIndex,]
-testSet <- tempSet[-validIndex,]
+random_df <- function(len){
 
-# Define the training control
-train_control <- trainControl(method = "cv", number = 5)
+  df <- data.frame(
+    x1 = runif(len, 0, 100),
+    x2 = runif(len, 0, 100),
+    x3 = runif(len, 0, 100),
+    x4 = runif(len, 0, 100),
+    Y = factor(rbinom(len, 1, 0.5)) # binary target
+  )
+  return(df)
+}
 
-# Define the search grid for the parameters
-grid <- expand.grid(
-  mtry = c(1,2,3),
-  splitrule = "variance",
-  min.node.size = 1, #Default
-  max.depth = c(0, 1, 2, 3, 4, 5, 6),
-  num.trees = 500
-)
+train_data <- random_df(500)
+validation_data <- random_df(200)
+testing_data <- random_df(100)
 
-# Train random forest model with parameter tuning
-rf_model <- caret::train(mpg ~ ., 
-                         data = trainSet, 
-                         method = "ranger", 
-                         trControl = train_control, 
-                         tuneGrid = grid)
+for (nt in num.trees) {
+  for (mt in mtry) {
+    # Train the model with the current hyperparameters
+    model <- ranger(Y ~ ., data = train_data, num.trees = nt, mtry = mt)
+    
+    # Make predictions on the validation set
+    predictions <- predict(model, data = validation_data)$predictions
+    
+    # Calculate accuracy
+    accuracy <- sum(predictions == validation_data$target_variable) / nrow(validation_data)
+    print(accuracy)    
+    # If this model is better than our best model so far, update the best model and best accuracy
+    if (accuracy > best.accuracy) {
+      best.model <- model
+      best.accuracy <- accuracy
+    }
+  }
+}
 
-# Print the best tuning parameters
-print(rf_model$bestTune)
+# Print the best hyperparameters and best accuracy
+print(best.model)
+print(paste('Best Accuracy:', best.accuracy))
 
-# Use model to predict on validation set
-valid_pred <- predict(rf_model, newdata = validSet)
+# Predict on the test set with the best model
+predictions <- predict(best.model, data = test_data)$predictions
 
-# Evaluate model performance on validation set
-valid_results <- postResample(pred = valid_pred, obs = validSet$mpg)
-print(valid_results)
+# Calculate accuracy on the test set
+accuracy <- sum(predictions == test_data$target_variable) / nrow(test_data)
 
-# If the model performance is satisfactory, predict on test set
-test_pred <- predict(rf_model, newdata = testSet)
+print(paste('Test Accuracy:', accuracy))
 
-# Evaluate model performance on test set
-test_results <- postResample(pred = test_pred, obs = testSet$mpg)
-print(test_results)

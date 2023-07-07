@@ -22,9 +22,13 @@ m1$Date <- as.Date(m1$Date)
 m2 <- read.csv(file = "../results/model_2_predictions_sin_validation_2.csv", header = TRUE)
 m2$Date <- m2$Date
 
-### r2 per Year ###
-#r2PerYear(m1, actual_values, years)
 
+### Monthly out-of-sample stock-level prediction performance ###
+
+monthly_stock_level_prediction_performance(predicted_df=m1, actual_df=actual_values)
+
+##r2(m1$Values,actual_values$Values)
+##rsq(m1$Values,actual_values$Values)
 
 ### Portfolio ###
 eq <- equally_weighted_portfolio(returns = actual_values)

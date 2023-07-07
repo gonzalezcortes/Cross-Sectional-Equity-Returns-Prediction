@@ -7,6 +7,8 @@ r2 <- function(predicted, actual){
   return(r_squared)
 }
 
+rsq <- function (x, y) cor(x, y) ^ 2
+
 r2PerYear <- function(predicted_df, actual_df, years){
   r2_a <- c()
   for (year in years){
@@ -18,6 +20,26 @@ r2PerYear <- function(predicted_df, actual_df, years){
   
   print(summary(r2_a))
 }
+
+monthly_stock_level_prediction_performance <- function(predicted_df, actual_df){
+  #Date Stock    Values
+  months <- unique(as.Date(predicted_df$Date))
+  stocks <- unique(predicted_df$Stock)
+  roos_i_array <- c()
+
+  for (stock in stocks){
+    
+      predicted_df_filtered <- predicted_df %>% filter(Stock %in% stock)
+      actual_df_filtered <- actual_df %>% filter(Stock %in% stock)
+      roos_i <- rsq(predicted_df_filtered$Values, actual_df_filtered$Values)
+      
+      roos_i_array <- c(roos_i_array, roos_i)
+  }
+  print(summary(roos_i_array))
+}
+
+
+#### Portfolio metrics ####
 
 calculate_cumulative_log_returns = function(mean_returns) {
   log_returns <- log(1 + mean_returns)
@@ -57,7 +79,7 @@ buy_sell <- function(pred_returns) {
   return(holdings)
 }
 
-####     Portfolios     ####
+####     Portfolio construction    ####
 
 
 equally_weighted_portfolio <- function(returns){

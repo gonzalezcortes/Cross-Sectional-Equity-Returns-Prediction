@@ -28,3 +28,15 @@ plot_two_portfolios <- function(labels, eq, eq2){
           legend.background = element_rect(fill = "white", colour = "black"), 
           legend.box.background = element_rect(colour = "black"))
 }
+
+# This function is created in case that a random data frame is needed it.
+random_df <- function(len){
+  df <- data.frame(
+    x1 = runif(len, 0, 100),
+    x2 = runif(len, 0, 100),
+    x3 = runif(len, 0, 100),
+    x4 = runif(len, 0, 100),
+    Y = factor(rbinom(len, 1, 0.5)) # binary target
+  )
+  return(df)
+}
