@@ -1,4 +1,4 @@
-library(ggplot2)
+
 
 r2 <- function(predicted, actual){
   rss <- sum((predicted - actual) ^ 2)
@@ -25,41 +25,15 @@ calculate_cumulative_log_returns = function(mean_returns) {
   return(cumulative_log_returns)
 }
 
-plot_portfolio <- function(eq){
-  df <- data.frame(index = 1:length(eq), value = eq)
-
-  ggplot(df, aes(x = index, y = value)) +
-    geom_line() +
-    labs(x = "Year", 
-         y = "Cumulative Log Return", 
-         title = "Cumulative Portfolio") +
-    scale_x_continuous(breaks = seq(from = 13, to = max(df$index), by = 24), 
-                       labels = seq(from = 1998, to = 2016, by = 2))
-}
-
-plot_two_portfolios <- function(labels, eq, eq2){
-  df <- data.frame(index = 1:length(eq), value = eq, value2 = eq2)
-  
-  ggplot(df, aes(x = index)) +
-    geom_line(aes(y = value, colour = labels[1])) +
-    geom_line(aes(y = value2, colour = labels[2])) +
-    labs(x = "Year", 
-         y = "Cumulative Log Return", 
-         title = "Cumulative Portfolio", 
-         colour = "Portfolio") +
-    scale_x_continuous(breaks = seq(from = 13, to = max(df$index), by = 24), 
-                       labels = seq(from = 1998, to = 2016, by = 2)) +
-    theme(legend.position = "bottom", 
-          legend.background = element_rect(fill = "white", colour = "black"), 
-          legend.box.background = element_rect(colour = "black"))
-}
 
 
 
 calculate_deciles <- function(labels, returns) {
   data <- data.frame(returns)
   deciles <- lapply(data, function(x) {
-    cut(x, breaks = quantile(x, probs = seq(0, 1, by = 0.1)), include.lowest = TRUE, labels = FALSE)
+    x_ranks <- rank(x, ties.method = "first")
+    cut(x_ranks, quantile(x_ranks, probs=0:10/10), include.lowest=TRUE, labels=FALSE)
+    #cut(x, breaks = quantile(x, probs = seq(0, 1, by = 0.1)), include.lowest = TRUE, labels = FALSE)
   })
   deciles_matrix <- do.call(cbind, deciles)  # Convert list to matrix
   deciles_df <- data.frame(Stock = labels, deciles_matrix)
@@ -83,18 +57,17 @@ buy_sell <- function(pred_returns) {
   return(holdings)
 }
 
-############################
 ####     Portfolios     ####
-############################
+
 
 equally_weighted_portfolio <- function(returns){
   months <- unique(as.Date(returns$Date))
   a_returns <- c()
   for (month in months){
     month <- as.Date(month)
-    print(month)
     df_filtered <- returns %>% filter(Date %in% month)
-    print(mean(df_filtered$Values))
+    #print(df_filtered)
+    print(paste0(month," - " ,mean(df_filtered$Values)))
     a_returns <- c(a_returns, mean(df_filtered$Values))
   }
   return(calculate_cumulative_log_returns(a_returns))
@@ -107,7 +80,6 @@ zero_net_portfolio <- function(actual_returns, predicted_returns){
   a_returns <- c()
   for (month in months){
     month <- as.Date(month)
-    print(month)
     
     df_filtered <- predicted_returns %>% filter(Date %in% month)
     
@@ -120,14 +92,15 @@ zero_net_portfolio <- function(actual_returns, predicted_returns){
     to_sell <- which(deciles$Deciles == 1)
     
     holdings_long <- deciles$Stock[to_buy]
-    #print(length(holdings_long))
+    #print(holdings_long)
     
     ### Get returns ###
     actual_filtered <- actual_returns %>% filter(Date %in% month)
     returns_holding <- actual_filtered  %>% filter(Stock %in% holdings_long) #actual_values
+    #print(unique(returns_holding$Stock))
     #print(returns_holding)
     
-    print(mean(returns_holding$Values))
+    print(paste0(month," - ",mean(returns_holding$Values)))
     a_returns <- c(a_returns, mean(returns_holding$Values))
     
   }

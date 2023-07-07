@@ -2,11 +2,13 @@ set.seed(8)
 library("ranger")
 
 ols_model <- function(samples){
-  training_data <- subset(samples$training, select = -Date)
-  validation_data <- subset(samples$validation, select = -Date)
+  # No validation
+  training_data <- subset(samples$training, select = c(-Date,-Stock))
+  validation_data <- subset(samples$validation, select = c(-Date,-Stock))
   
-  testing_data <- subset(samples$testing, select = -Date)
+  testing_data <- subset(samples$testing, select = c(-Date,-Stock))
 
+  #ols.model <- lm(Y ~ ., data = training_data)
   ols.model <- lm(Y ~ ., data = training_data)
   predictions <- array(predict(ols.model, newdata = testing_data))
 
@@ -14,10 +16,10 @@ ols_model <- function(samples){
 }
 
 ranger_model <- function(samples){
-  training_data <- subset(samples$training, select = -Date)
-  validation_data <- subset(samples$validation, select = -Date)
-  
-  testing_data <- subset(samples$testing, select = -Date)
+  #Drop Data and Stock columns
+  training_data <- subset(samples$training, select = c(-Date,-Stock))
+  validation_data <- subset(samples$validation, select = c(-Date,-Stock))
+  testing_data <- subset(samples$testing, select = c(-Date,-Stock))
   
   ranger_model <- ranger(Y ~ ., data = training_data)
   
