@@ -15,6 +15,13 @@
 <h2>Contact</h2>
 <p>If you have any questions or issues with the code in this repository, please feel free to contact me at d.gonzalezcortes@opendeusto.es or at daniel-alejandro.gonzalez-cortes.20@neoma-bs.com</p>
 
+<h3> Relevant Bibliography </h3>
+	<blockquote>
+		Gu, S., Kelly, B., & Xiu, D. (2020). Empirical asset pricing via machine learning. The Review of Financial Studies, 33(5), 2223-2273.
+	</blockquote>
+	<blockquote>
+		De Nard, G., Hediger, S., & Leippold, M. (2022). Subsampled factor models for asset pricing: The rise of Vasa. Journal of Forecasting, 41(6), 1217-1247. 
+	</blockquote>
 <h3> Data Sources </h3>
 <p> The data is not attached in this repository, however can be found in the following link:</p>
 <p>https://dachxiu.chicagobooth.edu/download/datashare.zip</p>
