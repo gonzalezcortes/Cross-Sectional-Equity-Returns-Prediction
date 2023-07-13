@@ -1,4 +1,28 @@
-#Data Generation
+### Data Generation ###
+#######################
+#######################
+
+library(rstudioapi)
+current_path = rstudioapi::getActiveDocumentContext()$path
+setwd(dirname(current_path ))
+
+#######################
+#######################
+#1) set path to save data
+#2) create two folders in the same fashion that Gu et al. (2020)
+#3) two folders for cases Pc=50 and Pc=100
+#######################
+#######################
+
+results_path <- '../../SimulatedData' 
+
+name1 <- '/SimuData_p50' 
+name2 <- '/SimuData_p100'
+
+dir.create(results_path)
+dir.create(paste0(results_path, name1))
+dir.create(paste0(results_path, name2))
+
 
 #######################
 #######################
@@ -143,9 +167,8 @@ theta <- c(1, 1, rep(0, m-2), 0, 0, 1, rep(0, m-3))*theta_w
 r1 <- cbind(c, cy) %*% theta + betav + ep
 rt <- cbind(c, cy) %*% theta
 
-#write.csv(cbind(c, cy), paste0(path, name2, '/c', M, '.csv'))
-#write.csv(r1, paste0(path, name2, '/r1_', M, '.csv'))
-
+write.csv(cbind(c, cy), paste0(results_path, name2, '/c', M, '.csv'))
+write.csv(r1, paste0(results_path, name2, '/r1_', M, '.csv'))
 
 #######################
 #######################
@@ -169,8 +192,7 @@ z[,(m+3)] <- sign(cy[,3]) * 0.6
 
 r1 <- z %*% theta + betav + ep
 
-## write.csv(r1, paste0(path, name2, '/r2_', M, '.csv'))
-
+write.csv(r1, paste0(results_path, name2, '/r2_', M, '.csv'))
 
 #######################
 #######################
@@ -186,8 +208,8 @@ m <- 50
 theta <- c(1, 1, rep(0, m-2), 0, 0, 1, rep(0, m-3))*theta_w
 r1 <- cbind(c[,1:m], cy[,1:m]) %*% theta + betav + ep
 
-##write.csv(cbind(c[,1:m], cy[,1:m]), paste0(path, name1, '/c', M, '.csv'))
-##write.csv(r1, paste0(path, name1, '/r1_', M, '.csv'))
+write.csv(cbind(c[,1:m], cy[,1:m]), paste0(results_path, name1, '/c', M, '.csv'))
+write.csv(r1, paste0(results_path, name1, '/r1_', M, '.csv'))
 
 ### Model 2
 z <- cbind(c[,1:m], cy[,1:m])
@@ -196,6 +218,13 @@ z[,2] <- c[,1] * c[,2] * 1.5
 z[,(m+3)] <- sign(cy[,3]) * 0.6
 
 r1 <- z %*% theta + betav + ep
+write.csv(r1, paste0(results_path, name1, '/r2_', M, '.csv'))
 
-## write.csv(r1, paste0(path, name1, '/r2_', M, '.csv'))
+### Elements created it
+print(paste0(results_path, name2, '/c', M, '.csv',' --  saved'))
+print(paste0(results_path, name2, '/r1_', M, '.csv' ,' --  saved'))
+print(paste0(results_path, name2, '/r2_', M, '.csv',' --  saved'))
+print(paste0(results_path, name1, '/c', M, '.csv', ' -- saved'))
+print(paste0(results_path, name1, '/r1_', M, '.csv', ' -- saved'))
+print(paste0(results_path, name1, '/r2_', M, '.csv', ' -- saved'))
 

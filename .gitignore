@@ -376,3 +376,6 @@ FodyWeavers.xsd
 .RDataTmp2
 .RDataTmp3
 borrador.ipynb
+
+/SimulatedData/SimuData_p50
+/SimulatedData/SimuData_p100
