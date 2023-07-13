@@ -46,26 +46,17 @@ c <- matrix(0, nrow=N*T, ncol=m) # 36000 (N*T), 100 #
 
 for (i in 1:m) {
   x <- matrix(0, nrow=N, ncol=T)
-  
   x[,1] <- rnorm(N, 0, 1) #vector with random numbers from a normal distribution
   
   for (t in 2:T) {
     x[,t] <- rho[i]*x[,t-1] + rnorm(N, 0, 1)*sqrt(1-rho[i]^2)
   }
-  #print(x)
   r <- apply(x, 2, rank) #rank x
-  
   tx0 <- t(r)*2/(N+1)
-
   x1 <- (t(tx0)-1)
-
   c[,i] <- as.vector(t(x1))
 }
 
-a <-  rnorm(16,0,1)
-aa <- matrix(a,4,4)
-aa
-aa[1,]
 #######################
 #######################
 #1) 'per' is a vector of to repeat T (180) times a sequence from 1 to N (200)
@@ -91,9 +82,6 @@ for (t in 1:T) {
   ind <- which(time==t)
   betav[ind] <- beta[ind,] %*% vt[,t]
 }
-
-#######################
-#######################
 
 #######################
 #######################
@@ -172,12 +160,7 @@ rt <- cbind(c, cy) %*% theta
 #6) then 'r1' is save into a csv file.
 #######################
 #######################
-cvv <- c(1,1,1,11,-5,1,-3,1,-1,-5,-5)
-sign(cvv)
 
-m+3
-length(z[,(m+3)])
-dim(z)
 ### Model 2
 z <- cbind(c, cy)
 z[,1] <- c[,1]^2 * 2
@@ -187,7 +170,6 @@ z[,(m+3)] <- sign(cy[,3]) * 0.6
 r1 <- z %*% theta + betav + ep
 
 ## write.csv(r1, paste0(path, name2, '/r2_', M, '.csv'))
-
 
 
 #######################
@@ -217,12 +199,3 @@ r1 <- z %*% theta + betav + ep
 
 ## write.csv(r1, paste0(path, name1, '/r2_', M, '.csv'))
 
-print(M)
-
-
-a <- 1000
-for (i in 1:30){
-  a <- a*1.1
-  a <- round(a,2)
-  print(paste0(i," - ",a))
-}
