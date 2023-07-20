@@ -1,17 +1,12 @@
 
 <h1>Machine Learning for Cross-Sectional Equity Returns Prediction</h1>
-<p>This repository contains code related to the research on the application of machine learning techniques for predicting cross-sectional equity returns using factors. The goal of this research is to explore the potential of machine learning algorithms for enhancing the performance of factor-based investment strategies.</p>
+<p>This repository contains the R code related to the research on the application of machine learning techniques for predicting cross-sectional equity returns using factors. The goal of this research is to explore the potential of machine learning algorithms for enhancing the performance of factor-based investment strategies.</p>
 <h2>Contents</h2>
 <p>The repository includes the following folders:</p>
 <ul>
-  <li><strong>data:</strong> Contains the data used in the analysis, including factor data and stock returns data. (Upon request)</li>
-  
 
-  <li><strong>pythonCode</strong> Implementation of the code in Python. It contains the trained machine learning models saved in multiple formats. </li>
-  <li><strong>RCode</strong> R code of trained machine learning models saved in various formats. </li>
-  
-  <li><strong>results:</strong> Reports and visualizations of the results obtained from the different models.</li>
-  <li><strong> SimulatedData:</strong> folder contains synthetic datasets used for calculating quarterly, half-yearly, and annual financial returns.
+  <li><strong>src:</strong> Contains the source code for various utility functions and modules used in the analysis. </li>
+
 </ul>
 
 <h2>Contact</h2>
