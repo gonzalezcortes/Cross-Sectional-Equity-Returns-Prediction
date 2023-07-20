@@ -7,8 +7,8 @@
   <li><strong>data:</strong> Contains the data used in the analysis, including factor data and stock returns data. (Upon request)</li>
   
 
-  <li><strong>pythonCode</strong> Implementation of the code in Python. It contains the trained machine learning models saved in multiple formats. </li>
-  <li><strong>RCode</strong> R code of trained machine learning models saved in various formats. </li>
+  <li><strong>pythonCode:</strong> Implementation of the code in Python. It contains the trained machine learning models saved in multiple formats. </li>
+  <li><strong>RCode: </strong> This folder contains the R code of trained machine learning models saved in various formats. </li>
   
   <li><strong>results:</strong> Reports and visualizations of the results obtained from the different models.</li>
   <li><strong> SimulatedData:</strong> folder contains synthetic datasets used for calculating quarterly, half-yearly, and annual financial returns.
