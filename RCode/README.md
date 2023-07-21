@@ -1,21 +1,29 @@
 
 <h1>Machine Learning for Cross-Sectional Equity Returns Prediction</h1>
-<p>This repository contains the R code related to the research on the application of Machine Learning (ML) techniques for predicting cross-sectional equity returns using factors. The goal of this research is to explore the potential of ML algorithms for enhancing the performance of factor-based investment strategies.</p>
+<p>This repository contains the R code related to the research on applying Machine Learning (ML) techniques for predicting cross-sectional equity returns using factors. This research aims to explore the potential of ML algorithms for enhancing the performance of factor-based investment strategies.</p>
+
 <h2>Contents</h2>
 <p>The repository includes the following folders:</p>
 <ul>
+
+  <li><strong> trainingGeneratedData.R <strong> Contains the training of ML models using generated data. </li>
+
+  <li><strong> trainingRealData.R </strong> This file contains the code to open and process the data and train the ML models. Once the training is finished, the data is saved into a 'CSV' file. </li>
+  
+  <li><strong> portfolio.R </strong> Once the training is finished, the 'CSV' files can be opened in this file to create a portfolio and plot it.
 
   <li><strong>src:</strong> Contains the source code for various utility functions and modules used in the analysis. </li>
       <ul>
       <li><strong>auxiliares.R</strong> Contains auxiliary functions such as plotting and others.</li>
       <li><strong>dataGeneration.R</strong> This file generates data following the framework for data generation of Gu et al. (2020). </li>
       <li><strong>metrics.R</strong> Holds multiple metrics functions such as R-square, Cumulative log returns and others. </li>
-      <li><strong>preProcessing.R</strong> This files contains functions that are use as preprocessing such as get the data, transform data and return calculation. </li>
+      <li><strong>preProcessing.R</strong> This file contains functions that are used as preprocessing, such as get the data, transform data and return calculation. </li>
       <li><strong>sampleSplitting.R</strong> Has the functions to get samples and split data in different periods. </li>
       <li><strong>trainingModels.R</strong> Contains different ML models. </li>
     </ul>
 
 </ul>
+
 
 <h2>Contact</h2>
 <p>If you have any questions or issues with the code in this repository, please feel free to contact me at d.gonzalezcortes@opendeusto.es or at daniel-alejandro.gonzalez-cortes.20@neoma-bs.com</p>

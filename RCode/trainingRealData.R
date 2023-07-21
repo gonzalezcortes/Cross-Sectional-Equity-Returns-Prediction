@@ -43,8 +43,8 @@ real_values <- c()
 real_dates <- as.Date(character())
 real_stocks <- c()
 
-#model_1_predictions <- c()
-model_2_predictions <- c() 
+model_1_predictions <- c()
+#model_2_predictions <- c() 
 
 for (month_index in seq(training_first, training_stop, by = 12)){
   iterations = iterations + 1
@@ -55,11 +55,11 @@ for (month_index in seq(training_first, training_stop, by = 12)){
   real_dates <- c(real_dates, as.Date(samples$testing$Date))
   real_stocks <- c(real_stocks, samples$testing$Stock)
   
-  #predictions <- ols_model(samples) #first model
-  #model_1_predictions <- c(model_1_predictions, predictions)
+  predictions <- ols_model(samples) #first model
+  model_1_predictions <- c(model_1_predictions, predictions)
   
-  predictions <- RandomForest_model(samples)
-  model_2_predictions <- c(model_2_predictions, predictions)
+  #predictions <- RandomForest_model(samples)
+  #model_2_predictions <- c(model_2_predictions, predictions)
   
 }
 
@@ -67,11 +67,11 @@ for (month_index in seq(training_first, training_stop, by = 12)){
 #df_real <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(real_values))
 #write.csv(df_real, "../results/actual_testing_values.csv", row.names=TRUE)
 
-#df_m1 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_1_predictions))
-#write.csv(df_m1, "../results/model_1_predictions.csv", row.names=TRUE)
+df_m1 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_1_predictions))
+write.csv(df_m1, "../results/model_1_predictions.csv", row.names=TRUE)
 
-df_m2 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_2_predictions))
-write.csv(df_m2, "../results/model_2_predictions.csv", row.names=TRUE)
+#df_m2 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_2_predictions))
+#write.csv(df_m2, "../results/model_2_predictions.csv", row.names=TRUE)
 
 
 
