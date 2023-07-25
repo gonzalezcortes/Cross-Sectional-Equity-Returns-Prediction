@@ -5,6 +5,7 @@ library(rstudioapi)
 current_path = rstudioapi::getActiveDocumentContext()$path
 setwd(dirname(current_path )) #set path
 
+## Call libraries
 source('src/preProcessing.R')
 source('src/sampleSplitting.R')
 source('src/trainingModels.R')

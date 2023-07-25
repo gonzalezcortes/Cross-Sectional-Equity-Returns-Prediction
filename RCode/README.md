@@ -22,11 +22,27 @@
             <li>get_data(n_dates, n_char, n_stocks)</li>
               <p> It loads the data from .RData and .csv files, then performs various transformations to reshape and clean the data. Finally, it returns a pivoted data frame grouped by 'Stock' and 'Date'.</p>
             <li>load_transformed_data()</li>
-              <p>This function loads the pivoted data from a .RData file and returns it as a data frame.</p>
+              <p>This function loads the pivoted data (already transformed in get_data()) from a .RData file and returns it as a data frame.</p>
             <li>get_returns(dates, stocks)</li>
               <p>It loads the returns data from a .RData file, and then combines the 'Date', 'Returns', and 'Stock' into a data frame and returns it.</p>
         </ul>
     <li><strong>sampleSplitting.R</strong> Has the functions to get samples and split data in different periods. </li>
+      <ul>
+        <li>get_samples(df, returns, month_index, training_first, validation_step, testing_step)</li>
+          <p> This function takes in six parameters: </p>
+            <ul>
+              <li>df: The data frame from which the samples will be extracted.</li>
+              <li>returns: The data frame containing returns data.</li>
+              <li>month_index: The index that specifies the current month.</li>
+              <li>training_first: The size of the training set.</li>
+              <li>validation_step: The step size for the validation set.</li>
+              <li>testing_step: The step size for the testing set.</li>
+            </ul>
+          <p>The function defines three periods: training, validation, and testing, with their respective start and end points based on the input parameters. It then creates a 'Y' column in the data frame, 'df', corresponding to the 'Returns' from the 'returns' data frame.
+
+Three subsets of the data frame 'df' are created for training, validation, and testing, filtered based on the date ranges defined earlier. These subsets are returned as a list with elements "training", "validation", and "testing" each containing their respective data frames.
+          </p>
+      </ul>
     <li><strong>trainingModels.R</strong> Contains different ML models. </li>
   </ul>
 </ul>
