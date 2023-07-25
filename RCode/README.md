@@ -6,7 +6,7 @@
 <p>The repository includes the following folders:</p>
 <ul>
 
-  <li><strong> trainingGeneratedData.R <strong> Contains the training of ML models using generated data. </li>
+  <li><strong> trainingGeneratedData.R </strong> Contains the training of ML models using generated data. </li>
 
   <li><strong> trainingRealData.R </strong> This file contains the code to open and process the data and train the ML models. Once the training is finished, the data is saved into a 'CSV' file. </li>
   
@@ -18,10 +18,34 @@
       <li><strong>dataGeneration.R</strong> This file generates data following the framework for data generation of Gu et al. (2020). </li>
       <li><strong>metrics.R</strong> Holds multiple metrics functions such as R-square, Cumulative log returns and others. </li>
       <li><strong>preProcessing.R</strong> This file contains functions that are used as preprocessing, such as get the data, transform data and return calculation. </li>
+      <ul>
+            <h3>get_data(n_dates, n_char, n_stocks)</h3>
+      <p>
+      This function takes in three parameters: 
+      <ul>
+      <li>n_dates: The number of dates.</li>
+      <li>n_char: The number of characteristics.</li>
+      <li>n_stocks: The number of stocks.</li>
+      </ul>
+      It loads the data from .RData and .csv files, then performs various transformations to reshape and clean the data. Finally, it returns a pivoted data frame grouped by 'Stock' and 'Date'.
+      </p>
+      
+      <h3>load_transformed_data()</h3>
+      <p>This function loads the pivoted data from a .RData file and returns it as a data frame.</p>
+      
+      <h3>get_returns(dates, stocks)</h3>
+      <p>This function takes in two parameters:
+      <ul>
+      <li>dates: A vector of dates.</li>
+      <li>stocks: A vector of stocks.</li>
+      </ul>
+      It loads the returns data from a .RData file, and then combines the 'Date', 'Returns', and 'Stock' into a data frame and returns it.
+      </p>
+      
       <li><strong>sampleSplitting.R</strong> Has the functions to get samples and split data in different periods. </li>
       <li><strong>trainingModels.R</strong> Contains different ML models. </li>
     </ul>
-
+  </ul>
 </ul>
 
 
