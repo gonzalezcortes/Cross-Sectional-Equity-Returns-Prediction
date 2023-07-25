@@ -17,6 +17,44 @@
         <li><strong>auxiliares.R</strong> Contains auxiliary functions such as plotting and others.</li>
         <li><strong>dataGeneration.R</strong> This file generates data following the framework for data generation of Gu et al. (2020). </li>
         <li><strong>metrics.R</strong> Holds multiple metrics functions such as R-square, Cumulative log returns and others. </li>
+          <ul>
+            <li>
+            <h3>r2(predicted, actual)</h3>
+            <p>This function calculates the coefficient of determination (R^2), which is a statistical measure that represents the proportion of the variance for a dependent variable that's explained by an independent variable in a regression model.</p>
+            </li>
+            <li>
+            <h3>rsq(x, y)</h3>
+            <p>This function computes the square of the correlation between the variables x and y.</p>
+            </li>
+            <li>
+            <h3>r2PerYear(predicted_df, actual_df, years)</h3>
+            <p>This function calculates the R^2 value for each year given in the 'years' vector. It filters the predicted and actual data frames by year and computes the R^2 value for each year. It then returns a summary of the calculated R^2 values.</p>
+            </li>
+            <li>
+            <h3>monthly_stock_level_prediction_performance(predicted_df, actual_df)</h3>
+            <p>This function calculates the square of the correlation between the predicted and actual values for each unique stock in the data frames, and returns a summary of these values.</p>
+            </li>
+            <li>
+            <h3>calculate_cumulative_log_returns(mean_returns)</h3>
+            <p>This function calculates the cumulative log returns for a given series of mean returns.</p>
+            </li>
+            <li>
+            <h3>calculate_deciles(labels, returns)</h3>
+            <p>This function takes in labels and returns, ranks the returns and divides them into deciles, then returns a data frame with the deciles for each label.</p>
+            </li>
+            <li>
+            <h3>buy_sell(pred_returns)</h3>
+            <p>This function calculates deciles of the predicted returns, identifies the top (10th decile) and bottom (1st decile) returns to buy and sell respectively, and returns these as a list of buy and sell holdings for each day.</p>
+            </li>
+            <li>
+            <h3>equally_weighted_portfolio(returns)</h3>
+            <p>This function calculates the mean returns for each unique month in the 'returns' data frame and calculates and returns the cumulative log returns for these mean returns.</p>
+            </li>
+            <li>
+            <h3>zero_net_portfolio(actual_returns, predicted_returns)</h3>
+            <p>This function calculates an equally-weighted, zero-net portfolio. It does this by determining the holdings to buy based on the top decile of predicted returns for each month, and then computing the mean of the actual returns for these holdings. It then calculates and returns the cumulative log returns for these mean returns.</p>
+            </li>
+          </ul>
         <li><strong>preProcessing.R</strong> This file contains functions that are used as preprocessing, such as get the data, transform data and return calculation. </li>
         <ul>
             <li>get_data(n_dates, n_char, n_stocks)</li>
