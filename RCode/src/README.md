@@ -16,7 +16,6 @@
     <li><strong>dataGeneration.R</strong> This file generates data following the framework for data generation of Gu et al. (2020). </li>
         <p>This R script generates two models with different parameters and simulates time series data based on specific equations. The data is then manipulated according to set rules and saved in .csv files for both cases when the number of predictors is 50 and 100. </p>
         <p>The script saves the generated data in .csv format in the folders 'SimuData_p50' and 'SimuData_p100' located in the 'SimulatedData' directory, relative to the directory where the script is run.</p>
-        
     <li><strong>metrics.R</strong> Holds multiple metrics functions such as R-square, Cumulative log returns and others. </li>
         <ul>
             <li>r2(predicted, actual)</li>
@@ -72,8 +71,6 @@
             <p> This function creates a Random Forest model, using a grid search approach to optimize hyperparameters for the model (mtry and max_depth). It uses the ranger library to fit the model. The best performing model on the validation set is then used to make predictions on the testing set.</p>
         </ul>
 </ul>
-
-
 <h2>Contact</h2>
 <p>If you have any questions or issues with the code in this repository, please feel free to contact me at d.gonzalezcortes@opendeusto.es or at daniel-alejandro.gonzalez-cortes.20@neoma-bs.com</p>
 
