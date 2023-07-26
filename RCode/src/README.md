@@ -45,6 +45,18 @@
                 <p>This function loads the pivoted data (already transformed in get_data()) from a .RData file and returns it as a data frame.</p>
             <li>get_returns(dates, stocks)</li>
                 <p>It loads the returns data from a .RData file, and then combines the 'Date', 'Returns', and 'Stock' into a data frame and returns it.</p>
+            <li>load_generated_data()</li>
+            <p>This function is used to load six specific CSV files from two directories named <i>SimuData_p50</i> and <i>SimuData_p100</i>. These directories are located within a parent directory called <i>SimulatedData</i>.</p>
+            <p>The CSV files to be loaded are:</p>
+            <ul>
+              <li>../SimulatedData/SimuData_p50/c1.csv</li>
+              <li>../SimulatedData/SimuData_p50/r1_1.csv</li>
+              <li>../SimulatedData/SimuData_p50/r2_1.csv</li>
+              <li>../SimulatedData/SimuData_p100/c1.csv</li>
+              <li>../SimulatedData/SimuData_p100/r1_1.csv</li>
+              <li>../SimulatedData/SimuData_p100/r2_1.csv</li>
+            </ul>
+            <p>The function reads each CSV file and stores them as data frames in a list. The file paths are used as the names of the corresponding elements in the list for easy reference.</p>
         </ul>
     <li><strong>sampleSplitting.R</strong> Has the functions to get samples and split data in different periods. </li>
         <ul>
