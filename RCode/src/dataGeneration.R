@@ -167,8 +167,8 @@ theta <- c(1, 1, rep(0, m-2), 0, 0, 1, rep(0, m-3))*theta_w
 r1 <- cbind(c, cy) %*% theta + betav + ep
 rt <- cbind(c, cy) %*% theta
 
-write.csv(cbind(c, cy), paste0(results_path, name2, '/c', M, '.csv'))
-write.csv(r1, paste0(results_path, name2, '/r1_', M, '.csv'))
+write.csv(cbind(c, cy), paste0(results_path, name2, '/c', M, '.csv'),row.names = FALSE)
+write.csv(r1, paste0(results_path, name2, '/r1_', M, '.csv'),row.names = FALSE)
 
 #######################
 #######################
@@ -192,7 +192,7 @@ z[,(m+3)] <- sign(cy[,3]) * 0.6
 
 r1 <- z %*% theta + betav + ep
 
-write.csv(r1, paste0(results_path, name2, '/r2_', M, '.csv'))
+write.csv(r1, paste0(results_path, name2, '/r2_', M, '.csv'),row.names = FALSE)
 
 #######################
 #######################
@@ -206,8 +206,8 @@ m <- 50
 theta <- c(1, 1, rep(0, m-2), 0, 0, 1, rep(0, m-3))*theta_w
 r1 <- cbind(c[,1:m], cy[,1:m]) %*% theta + betav + ep
 
-write.csv(cbind(c[,1:m], cy[,1:m]), paste0(results_path, name1, '/c', M, '.csv'))
-write.csv(r1, paste0(results_path, name1, '/r1_', M, '.csv'))
+write.csv(cbind(c[,1:m], cy[,1:m]), paste0(results_path, name1, '/c', M, '.csv'),row.names = FALSE)
+write.csv(r1, paste0(results_path, name1, '/r1_', M, '.csv'),row.names = FALSE)
 
 ### Model 2
 z <- cbind(c[,1:m], cy[,1:m])
@@ -216,7 +216,7 @@ z[,2] <- c[,1] * c[,2] * 1.5
 z[,(m+3)] <- sign(cy[,3]) * 0.6
 
 r1 <- z %*% theta + betav + ep
-write.csv(r1, paste0(results_path, name1, '/r2_', M, '.csv'))
+write.csv(r1, paste0(results_path, name1, '/r2_', M, '.csv'),row.names = FALSE)
 
 ### Elements created it
 print(paste0(results_path, name2, '/c', M, '.csv',' --  saved'))
