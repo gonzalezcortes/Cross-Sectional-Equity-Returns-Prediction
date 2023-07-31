@@ -26,17 +26,16 @@ dir.create(paste0(results_path, name2))
 
 #######################
 #######################
-
-#1) M definida como Monthly 
-#2) N es ...
-#3) m es ...
-#4) T es...
-#5) stdv es desviación estandar 
-#6) theta_w es ...
-#7) stde es ...
-
+#1) M (Months)
+#2) N definition
+#3) m definition
+#4) T definition
+#5) stdv definition of standard deviation 
+#6) theta_w definition
+#7) stde definition
 #######################
 #######################
+
 M <- 1
 N <- 200
 m <- 100
@@ -45,26 +44,27 @@ T <- 180
 stdv <- 0.05
 theta_w <- 0.02
 stde <- 0.05
-#######################
-#######################
-#1) 'rho' is a vector from a random numbers from a uniform distribution
-#2) 'c' es una matriz de ceros
-#3) Tengo una matrix llamada 'c' de (36000, 100) (N=200*T=180), (m=100)
-#4) Tengo un vector 'rho' con numeros random desde una distribucion unifome con m (100) valores
-#5) Hace un loop con el numero de columnas (m=100)
-#6) Crea una matrix llamada 'x' de ceros con dimension (N=200, T=180)
-#7) A la primera columna de la matrix 'x' le agrego un vector con números random de dimension N (N=200)
-#8) Hace un loop desde 2 hasta T [2,T=180]
-#9) En cada columna de 'x' (>1) se agrega un valor de rho multiplicado por la columna anterior de 'x' más
-#   un vector de numeros aleatearos de N (200) valores con distribución normal multiplicado por la raiz cuadrada
-#   de la diferencia de 1 menos el valor de rho al cuadrado
-#10) Después a esa matrz 'x' se le agrega aplica una función que las rankea las variables por cada columna
-#11) tx0 es la transpuesta de r multiplicado por 2 y dividido por N+1 (N=200) (No es parte del código original, creada para leer mejor el código)
-#12) Se crea una matriz 'x1' con las mismas dimensiones que 'x', la cuál es la transpuesta de 'tx0' menos 1
-#13) Se actualiza la columna 'i' con el vector de la transpuesta de 'x1'
 
 #######################
 #######################
+#1) 'rho' is a vector from a random numbers from a uniform distribution
+#2) 'c' is a matrix of zeros
+#3) matrix called 'c' of (36000, 100) (N=200*T=180), (m=100)
+#4) 'rho' with random numbers from a uniform distribution with m (100) values
+#5) It makes a loop with the number of columns (m=100)
+#6) It creates a matrix called 'x' of zeros with dimension (N=200, T=180)
+#7) To the first column of the matrix 'x' I add a vector with random numbers of dimension N (N=200)
+#8) It makes a loop from 2 to T [2,T=180]
+#9) In each column of 'x' (>1), it adds a value of rho multiplied by the previous column of 'x' plus
+# a vector of random numbers of N (200) values with normal distribution multiplied by the square root
+# of the difference of 1 minus the value of rho squared
+#10) Then, to that matrix 'x', it applies a function that ranks the variables for each column
+#11) tx0 is the transpose of r multiplied by 2 and divided by N+1 (N=200) (Not part of the original code, created for better code readability)
+#12) It creates a matrix 'x1' with the same dimensions as 'x', which is the transpose of 'tx0' minus 1
+#13) It updates the column 'i' with the vector of the transpose of 'x1'
+#######################
+#######################
+
 rho <- runif(m, 0.9, 1) #random numbers from a uniform distribution
 c <- matrix(0, nrow=N*T, ncol=m) # 36000 (N*T), 100 # 
 
@@ -96,6 +96,7 @@ for (i in 1:m) {
 
 #######################
 #######################
+
 per <- rep(1:N,T)
 time <- rep(1:T, each=N)
 vt <- matrix(rnorm(3*T, 0, stdv), nrow=3, ncol=T)
@@ -119,6 +120,8 @@ for (t in 1:T) {
 #   of 'q' and the t-th - 1 element of the vector 'y' plus a a single random number 
 #   from a standard normal distribution multiply by multiplies it by the square root 
 #   of (1-q^2)
+#######################
+#######################
 
 y <- rep(0,T)
 y[1] <- rnorm(1, 0, 1)
@@ -140,6 +143,7 @@ for (t in 2:T) {
 #   then it's being scaled by stde (0.05).
 #######################
 #######################
+
 cy <- c
 for (t in 1:T) {
   ind <- which(time==t)
@@ -191,7 +195,6 @@ z[,2] <- c[,1] * c[,2] * 1.5
 z[,(m+3)] <- sign(cy[,3]) * 0.6
 
 r1 <- z %*% theta + betav + ep
-
 write.csv(r1, paste0(results_path, name2, '/r2_', M, '.csv'),row.names = FALSE)
 
 #######################
