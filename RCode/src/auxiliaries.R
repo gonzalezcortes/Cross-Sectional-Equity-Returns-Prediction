@@ -29,6 +29,22 @@ plot_two_portfolios <- function(labels, eq, eq2){
           legend.box.background = element_rect(colour = "black"))
 }
 
+
+save_plot_two_portfolios <- function(labels, eq, eq2, title, plot_dir = '../plots/'){
+  plot <- plot_two_portfolios(labels, eq, eq2)
+  
+  # Generate a timestamp for the filename
+  timestamp <- format(Sys.time(), "%Y%m%d_%H%M%S")
+  
+  # Create the full filename, including path, name, timestamp, and extension
+  filename <- paste0(plot_dir, title, timestamp, ".png")
+  
+  # Save the plot
+  ggsave(filename, plot = plot, width = 10, height = 6)
+}
+
+
+
 # This function is created in case that a random data frame is needed it.
 random_df <- function(len){
   df <- data.frame(
