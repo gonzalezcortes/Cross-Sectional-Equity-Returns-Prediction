@@ -12,8 +12,8 @@
             <li>plot_portfolio</li> <p> This function creates a line plot representing the cumulative log return of a single portfolio over time. It takes as input an equity (eq) vector, creates a data frame with it, and plots it using ggplot2.</p>
             <li>plot_two_portfolios</li> <p> This function extends the 'plot_portfolio' function to compare two portfolios over time. It takes in two labels and two equity vectors (eq, eq2) as input. The function generates a line plot where each line represents the cumulative log return of one portfolio, differentiated by color.</p>
             <li>random_df</li> <p> This function generates a random data frame of specified length (len). The data frame contains four continuous variables (x1, x2, x3, x4) ranging from 0 to 100, and a binary target variable Y. This can be used for testing or prototyping purposes.</p>
-        </ul>
             <li>save_plot_two_portfolios</li> <p> This function builds upon 'plot_two_portfolios', generating and saving as a PNG file a plot for two portfolios the plot as a PNG file. It takes in two labels, two equity vectors (eq, eq2), a title for the plot, and optionally a directory to save the plot. </p>
+            </ul>
     <li><strong>dataGeneration.R</strong> This file generates data following the framework for data generation of Gu et al. (2020). </li>
         <p>This R script generates two models with different parameters and simulates time series data based on specific equations. The data is then manipulated according to set rules and saved in .csv files for both cases when the number of predictors is 50 and 100. </p>
         <p>The script saves the generated data in .csv format in the folders 'SimuData_p50' and 'SimuData_p100' located in the 'SimulatedData' directory, relative to the directory where the script is run.</p>
