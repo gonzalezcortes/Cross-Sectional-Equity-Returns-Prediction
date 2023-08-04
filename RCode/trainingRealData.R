@@ -65,24 +65,30 @@ real_stocks <- c()
 
 #Model 1 - OLS
 model_1_predictions <- c()
-
+r2_scores <- c()
 
 for (month_index in seq(training_first, training_stop, by = 12)){
-  iterations = iterations + 1
-  print(paste0("Iteration ",iterations))
-  samples <- get_samples(df_pivot, returns, month_index, training_first, validation_step, testing_step)
-  
-  real_values <- c(real_values, samples$testing$Y)
-  real_dates <- c(real_dates, as.Date(samples$testing$Date))
-  real_stocks <- c(real_stocks, samples$testing$Stock)
-  
-  predictions <- ols_model(samples) #first model
-  model_1_predictions <- c(model_1_predictions, predictions)
-  
-  #predictions <- RandomForest_model(samples)
-  #model_2_predictions <- c(model_2_predictions, predictions)
-  
+    iterations = iterations + 1
+    print(paste0("Iteration ",iterations))
+
+    samples <- get_samples(df_pivot, returns, month_index, training_first, validation_step, testing_step)
+    
+    real_values <- c(real_values, samples$testing$Y)
+    real_dates <- c(real_dates, as.Date(samples$testing$Date))
+    real_stocks <- c(real_stocks, samples$testing$Stock)
+    
+    
+    mtrain <- mean(samples$training$Y) #mtrain is the mean of y train
+    
+    predictions <- ols_model(samples) #first model
+    model_1_predictions <- c(model_1_predictions, predictions)
+
+    r2_score <- r2(model_1_predictions, real_values, mtrain)
+    r2_scores <- c(r2_scores, r2_score)
+    print(r2_score)
+    
 }
+
 
 ##### Save data ###
 #df_real <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(real_values))
@@ -90,6 +96,8 @@ for (month_index in seq(training_first, training_stop, by = 12)){
 
 df_m1 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_1_predictions))
 write.csv(df_m1, "../results/model_1_predictions.csv", row.names=TRUE)
+
+print(r2_scores)
 
 #df_m2 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_2_predictions))
 #write.csv(df_m2, "../results/model_2_predictions.csv", row.names=TRUE)

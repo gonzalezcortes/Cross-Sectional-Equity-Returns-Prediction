@@ -1,11 +1,21 @@
 
 
-r2 <- function(predicted, actual){
+r2_old <- function(predicted, actual){
   rss <- sum((predicted - actual) ^ 2)
   tss <- sum((actual - mean(actual)) ^ 2)
   r_squared <- 1 - rss/tss
   return(r_squared)
 }
+
+r2 <- function(predicted, actual, mtrain){
+    #mtrain is the mean(ytrain)
+    
+    r_squared = 1 - sum((predicted - actual)^2) / sum((actual - mtrain)^2)
+    
+
+    return(r_squared)
+}
+
 
 rsq <- function (x, y) cor(x, y) ^ 2
 

@@ -64,11 +64,6 @@ get_data <- function(n_dates, n_char, n_stocks){
 
 }
 
-load_transformed_data <- function(){
-  load('../data/df_pivot.RData')
-  df_pivot <- data.frame(df_pivot)
-   return(df_pivot)
-}
 
 get_returns <- function(dates, stocks){
   #ret <- array(load('../data/exretMat.RData'), dim=c(n_dates, n_stocks))

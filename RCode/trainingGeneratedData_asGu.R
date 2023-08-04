@@ -149,7 +149,6 @@ for (mo in c(1, 2)) {
     mtrain <- mean(ytrain)
     mtest <- mean(ytest)
   
-    # Normalize the predictors
     # Calculate Sufficient Stats
     sd <- rep(0, ncol(xtrain))
     
@@ -162,11 +161,13 @@ for (mo in c(1, 2)) {
             sd[i] <- s
         }
     }
-    
+
     # Convert data frames to matrices
     xtrain <- as.matrix(xtrain)
+    # colnames(xtrain) <- NULL
     xtest <- as.matrix(xtest)
-  
+    # colnames(xtest) <- NULL
+    
     # Compute some statistics
     XX <- t(xtrain) %*% xtrain
 

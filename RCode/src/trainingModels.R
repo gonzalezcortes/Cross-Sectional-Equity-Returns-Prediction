@@ -4,15 +4,16 @@ source('src/metrics.R')
 
 ols_model <- function(samples){
   # No validation
-  training_data <- subset(samples$training, select = c(-Date,-Stock))
-  validation_data <- subset(samples$validation, select = c(-Date,-Stock))
-  
-  testing_data <- subset(samples$testing, select = c(-Date,-Stock))
-  ols.model <- lm(Y ~ ., data = training_data)
-  
-  predictions <- array(predict(ols.model, newdata = testing_data))
+    
+    training_data <- subset(samples$training, select = c(-Date,-Stock))
+    validation_data <- subset(samples$validation, select = c(-Date,-Stock))
+    testing_data <- subset(samples$testing, select = c(-Date,-Stock))
 
-  return(predictions)
+    ols.model <- lm(Y ~ ., data = training_data)
+    
+    predictions <- array(predict(ols.model, newdata = testing_data))
+    
+    return(predictions)
 }
 
 ranger_model <- function(samples){
