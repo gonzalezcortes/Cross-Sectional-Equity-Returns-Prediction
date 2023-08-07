@@ -7,6 +7,7 @@ r2_old <- function(predicted, actual){
   return(r_squared)
 }
 
+## Extracted from gu et al (2020)
 r2 <- function(predicted, actual, mtrain){
     #mtrain is the mean(ytrain)
     
