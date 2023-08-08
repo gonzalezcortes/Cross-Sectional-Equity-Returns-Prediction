@@ -90,7 +90,6 @@ datanum <- 50
 ###############################################################################
 
 for (mo in c(1, 2)) {
-
   
     # Definition of the title as path to the specific file
     title <- paste(dirname(path), "/SimulatedData/SimuData_p", 
