@@ -6,9 +6,9 @@
 <p>The repository includes the following folders:</p>
 <ul>
 
-  <li><strong> trainingGeneratedData.R </strong> Contains the training of ML models using generated data. </li>
+  <li><strong> trainingGeneratedData_asGu.R </strong> Contains the training of ML models to get returns using generated data in the same fashion that Gu et al. (2020). This is a similar translation of their code from MATLAB to R. </li>
 
-  <li><strong> trainingRealData.R </strong> This file contains the code to open and process the data and train the ML models. Once the training is finished, the data is saved into a 'CSV' file. </li>
+  <li><strong> getReturns.R </strong> This file contains the code to open and process the data and train the ML models. Once the training is finished, the data is saved into a 'CSV' file. </li>
   
   <li><strong> portfolio.R </strong> Once the training is finished, the 'CSV' files can be opened in this file to create a portfolio and plot it.
 
