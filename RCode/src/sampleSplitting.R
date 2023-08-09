@@ -1,6 +1,6 @@
 library(dplyr)
 
-get_samples <- function(df, returns, month_index, training_first, validation_step, testing_step){
+get_samples_old <- function(df, returns, month_index, training_first, validation_step, testing_step){
   
   dates <- df$Date
   
@@ -28,4 +28,34 @@ get_samples <- function(df, returns, month_index, training_first, validation_ste
   
   return(list("training" = training_sample, "validation" = validation_sample, 
               "testing" = testing_sample))
+}
+
+#optimized
+get_samples <- function(df, returns, month_index, training_first, validation_step, testing_step){
+    
+    dates <- df$Date
+    
+    #training_start <- month_index-training_first
+    training_start <- 1
+    training_end <- month_index
+    
+    validation_start <- training_end + 1
+    validation_end <- month_index+validation_step
+    
+    testing_start <- validation_end + 1
+    testing_end <- month_index+validation_step+testing_step
+    
+    df$Y <- returns$Returns
+    
+    training_dates <- dates[training_start:training_end]
+    validation_dates <- dates[validation_start:validation_end]
+    testing_dates <- dates[testing_start:testing_end]
+    
+    
+    training_sample <- df %>% inner_join(data.frame(Date = training_dates), by = "Date")
+    validation_sample <- df %>% inner_join(data.frame(Date = validation_dates), by = "Date")
+    testing_sample <- df %>% inner_join(data.frame(Date = testing_dates), by = "Date")
+    
+    return(list("training" = training_sample, "validation" = validation_sample, 
+                "testing" = testing_sample))
 }

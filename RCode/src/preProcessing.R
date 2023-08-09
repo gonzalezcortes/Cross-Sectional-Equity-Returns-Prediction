@@ -65,9 +65,9 @@ get_data <- function(n_dates, n_char, n_stocks){
 }
 
 load_transformed_data <- function(){
-  load('../data/df_pivot.RData')
-  df_pivot <- data.frame(df_pivot)
-   return(df_pivot)
+    load('../data/df_pivot.RData')
+    df_pivot <- data.frame(df_pivot)
+    return(df_pivot)
 }
 
 get_returns <- function(dates, stocks){
@@ -83,3 +83,13 @@ get_returns <- function(dates, stocks){
   return(combined_returns)
   
 }
+
+load_generated_data <- function() {
+  file_paths <- c('../SimulatedData/SimuData_p50/c1.csv', '../SimulatedData/SimuData_p50/r1_1.csv', '../SimulatedData/SimuData_p50/r2_1.csv', 
+                  '../SimulatedData/SimuData_p100/c1.csv', '../SimulatedData/SimuData_p100/r1_1.csv', '../SimulatedData/SimuData_p100/r2_1.csv')
+  data_list <- lapply(file_paths, read.csv)
+  names(data_list) <- file_paths
+  print(paste0(file_paths, " loaded"))
+  return(data_list)
+}
+
