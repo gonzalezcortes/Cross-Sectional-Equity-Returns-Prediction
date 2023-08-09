@@ -64,7 +64,7 @@ training_stop <- n_dates-validation_step-testing_step
 
 #Model 1 - OLS
 model_1_predictions <- c()
-r2_scores <- c()
+
 
 for (month_index in seq(training_first, training_stop, by = 12)){
     iterations = iterations + 1
@@ -81,10 +81,6 @@ for (month_index in seq(training_first, training_stop, by = 12)){
     predictions <- ols_model(samples) #first model
     model_1_predictions <- c(model_1_predictions, predictions)
 
-    r2_score <- r2(model_1_predictions, real_values, mtrain)
-    r2_scores <- c(r2_scores, r2_score)
-    print(r2_score)
-    
     # Delete object to release memory
     rm(samples)
 }
