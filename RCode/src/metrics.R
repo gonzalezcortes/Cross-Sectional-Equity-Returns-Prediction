@@ -1,6 +1,7 @@
+#This script contains functions to calculate metrics of performance.
 
-
-r2_old <- function(predicted, actual){
+# Regular R2 metric
+r2_metric <- function(predicted, actual){
   rss <- sum((predicted - actual) ^ 2)
   tss <- sum((actual - mean(actual)) ^ 2)
   r_squared <- 1 - rss/tss

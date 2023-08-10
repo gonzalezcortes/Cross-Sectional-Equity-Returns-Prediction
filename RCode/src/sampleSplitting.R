@@ -59,3 +59,9 @@ get_samples <- function(df, returns, month_index, training_first, validation_ste
     return(list("training" = training_sample, "validation" = validation_sample, 
                 "testing" = testing_sample))
 }
+
+filter_by_stock <- function(df, stock){
+    filtered_df <- df %>% filter(Stock == stock) %>% as.data.frame()
+    return (filtered_df)
+}
+

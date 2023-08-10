@@ -63,8 +63,11 @@ training_stop <- n_dates-validation_step-testing_step
 #real_stocks <- c()
 
 #Model 1 - OLS
-model_1_predictions <- c()
+model_2_predictions <- list()
+model_3_predictions <- list()
 
+#df_pivot <- df_pivot[df_pivot$Stock %in% c(23085, 11703), ]
+#returns <- returns[returns$Stock %in% c(23085, 11703), ]
 
 for (month_index in seq(training_first, training_stop, by = 12)){
     iterations = iterations + 1
@@ -74,24 +77,28 @@ for (month_index in seq(training_first, training_stop, by = 12)){
     
     #real_values <- c(real_values, samples$testing$Y)
     #real_dates <- c(real_dates, as.Date(samples$testing$Date))
-    #real_stocks <- c(real_stocks, samples$testing$Stock)
     
-    mtrain <- mean(samples$training$Y) #mtrain is the mean of y train
+    #predictions_1 <- ols_model(samples) #first model
+    predictions_2 <- lasso_ridge_model(samples,1) #Lasso
+    predictions_3 <- lasso_ridge_model(samples,0) #Ridge
     
-    predictions <- ols_model(samples) #first model
-    model_1_predictions <- c(model_1_predictions, predictions)
-
-    # Delete object to release memory
+    model_2_predictions[[iterations]] <- predictions_2
+    model_3_predictions[[iterations]] <- predictions_3
+    
     rm(samples)
 }
+
+combined_predictions_2 <- do.call(rbind, model_2_predictions)
+combined_predictions_3 <- do.call(rbind, model_3_predictions)
 
 
 ##### Save data ###
 #df_real <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(real_values))
 #write.csv(df_real, "../results/actual_testing_values.csv", row.names=TRUE)
 
-df_m1 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_1_predictions))
-write.csv(df_m1, "../results/model_1_predictions.csv", row.names=TRUE)
+##df_m1 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_1_predictions))
+write.csv(combined_predictions_2, "../results/combined_predictions_2.csv", row.names=TRUE)
+write.csv(combined_predictions_3, "../results/combined_predictions_3.csv", row.names=TRUE)
 
 #print(r2_scores)
 
