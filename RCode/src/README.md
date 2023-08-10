@@ -77,11 +77,12 @@
     <li><strong>trainingModels.R</strong> Contains different ML models. </li>
         <ul>
             <li> ols_model</li>
-            <p>This function builds an Ordinary Least Squares (OLS) regression model using a list of samples. The model is trained on the training set and then used to make predictions on the testing set.</p>
-            <li> ranger_model </li> 
-            <p> This function utilizes the ranger library to fit a random forest model to the training data, and then uses this model to make predictions on the testing set.</p>
-            <li> RandomForest_model</li>: 
-            <p> This function creates a Random Forest model, using a grid search approach to optimize hyperparameters for the model (mtry and max_depth). It uses the ranger library to fit the model. The best performing model on the validation set is then used to make predictions on the testing set.</p>
+		<p>This function builds an Ordinary Least Squares (OLS) regression model using a list of samples. The model is trained on the training set and then used to make predictions on the testing set.</p>
+            <li> lasso_ridge_model </li> 
+		<p> This function utilizes the glmnet library to fit a lasso and ridge model to the training data, and then uses this model to make predictions on the testing set.</p>
+		<p> The variable LOR determines the alpha. If 1 is Lasso and if it is equal to 0 is for Ridge.</p>
+            <li> RandomForest_model</li>
+		<p> This function creates a Random Forest model, using a grid search approach to optimize hyperparameters for the model (mtry and max_depth). It uses the ranger library to fit the model. The best performing model on the validation set is then used to make predictions on the testing set.</p>
         </ul>
 </ul>
 <h2>Contact</h2>
