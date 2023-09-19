@@ -7,7 +7,7 @@ source('src/metrics.R') # To get metric, R2
 
 ## Load data ##
 actual_model <- as.data.frame(read.csv(file = "../results/actual_testing_values.csv", header = TRUE))
-model_x <- as.data.frame(read.csv(file = "../results/model_x_predictions.csv", header = TRUE))
+model_x <- as.data.frame(read.csv(file = "../results/combined_predictions_3.csv", header = TRUE))
 
 ## Get the identifier of the stock
 stocks <- unique(actual_model$Stock)
@@ -22,7 +22,7 @@ for (stock in stocks) {
     actual_model_filtered <- filter_by_stock(actual_model, stock)
     
     #calculate the R2
-    r2Stock <- r2_metric(model_x_filtered$Values, actual_model_filtered$Values)
+    r2Stock <- r2_metric(model_x_filtered$Prediction, actual_model_filtered$Values)
     
     #Add the results to a list
     r2_results <- c(r2_results, r2Stock)

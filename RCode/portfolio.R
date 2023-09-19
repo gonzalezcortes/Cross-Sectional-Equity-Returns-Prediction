@@ -39,21 +39,30 @@ source('src/auxiliaries.R')
 years <- as.character(seq(1997, 2016))
 
 ### Open results ###
-actual_values <- read.csv(file = "../results/actual_x.csv", header = TRUE)
+actual_values <- read.csv(file = "../results/actual_testing_values.csv", header = TRUE)
 actual_values$Date <- as.Date(actual_values$Date)
 
+actual_values
+
 #m1 <- read.csv(file = "../results/model_x.csv", header = TRUE)
-m1 <- read.csv(file = "../results/model_1_predictions.csv", header = TRUE)
-m1$Date <- as.Date(m1$Date)
+#m1 <- read.csv(file = "../results/model_x_predictions.csv", header = TRUE)
+#m1$Date <- as.Date(m1$Date)
 #m1$Date <- actual_values$Date
+m1 <- read.csv(file = "../results/combined_predictions_1.csv", header = TRUE)
+m1$Date <- as.Date(m1$Date)
 
-#m2 <- read.csv(file = "../results/model_2_predictions_sin_validation_2.csv", header = TRUE)
-#m2$Date <- m2$Date
+m2 <- read.csv(file = "../results/combined_predictions_2.csv", header = TRUE)
+
+m3 <- read.csv(file = "../results/combined_predictions_3.csv", header = TRUE)
 
 
+print("Monthly out-of-sample stock-level prediction performance")
 ### Monthly out-of-sample stock-level prediction performance ###
+monthly_stock_level_prediction_performance(m1)
 
-monthly_stock_level_prediction_performance(predicted_df=m1, actual_df=actual_values)
+monthly_stock_level_prediction_performance(m2)
+
+monthly_stock_level_prediction_performance(m3)
 
 ##r2(m1$Values,actual_values$Values)
 ##rsq(m1$Values,actual_values$Values)
@@ -74,16 +83,24 @@ monthly_stock_level_prediction_performance(predicted_df=m1, actual_df=actual_val
 # and accumulates these monthly returns. 
 # The function finally returns the cumulative log return of these mean monthly 
 # returns.
+### Equally weighted ###
+portfolio_equally_weighted <- calculate_equally_weighted_portfolio(actual_values)
+cumulative_equally_weighted <- calculate_cumulative_log_returns(portfolio_value$Portfolio_Value)
+plot(cumulative_equally_weighted)
 
-eq <- equally_weighted_portfolio(returns = actual_values)
-ze_1 <- zero_net_portfolio(actual_returns = actual_values, predicted_returns = m1)
+m1
 
+### Zero net ###
+
+source('src/metrics.R')
+ze_1 <- zero_net_portfolio_a(m3)
+ze_1 
 #ze_2 <- zero_net_portfolio(actual_returns = actual_values, predicted_returns = m2)
 
 ##plot_portfolio(eq)
 #plot_two_portfolios(ze)
 
-plot_two_portfolios(c("Eq W", "M1"),eq, ze_1)
+plot_two_portfolios(c("Eq W", "M1"),cumulative_equally_weighted, ze_1)
 
 save_plot_two_portfolios(c("Eq W", "M1"),eq, ze_1, "portfolio_1_")
 
