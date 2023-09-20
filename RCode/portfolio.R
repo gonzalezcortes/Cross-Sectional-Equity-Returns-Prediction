@@ -28,7 +28,8 @@
 # accuracy.
 
 ####################################################################
-
+library(ggplot2)
+library(reshape2)
 library(dplyr)
 library(rstudioapi)
 current_path = rstudioapi::getActiveDocumentContext()$path
@@ -48,13 +49,14 @@ actual_values
 #m1 <- read.csv(file = "../results/model_x_predictions.csv", header = TRUE)
 #m1$Date <- as.Date(m1$Date)
 #m1$Date <- actual_values$Date
-m1 <- read.csv(file = "../results/combined_predictions_1.csv", header = TRUE)
+m1 <- read.csv(file = "../results/combined_predictions_1_OLS3.csv", header = TRUE)
 m1$Date <- as.Date(m1$Date)
 
-m2 <- read.csv(file = "../results/combined_predictions_2.csv", header = TRUE)
+m2 <- read.csv(file = "../results/combined_predictions_2_standard.csv", header = TRUE)
+m2$Date <- as.Date(m2$Date)
 
-m3 <- read.csv(file = "../results/combined_predictions_3.csv", header = TRUE)
-
+m3 <- read.csv(file = "../results/combined_predictions_3_standard.csv", header = TRUE)
+m3$Date <- as.Date(m3$Date)
 
 print("Monthly out-of-sample stock-level prediction performance")
 ### Monthly out-of-sample stock-level prediction performance ###
@@ -85,26 +87,46 @@ monthly_stock_level_prediction_performance(m3)
 # returns.
 ### Equally weighted ###
 portfolio_equally_weighted <- calculate_equally_weighted_portfolio(actual_values)
-cumulative_equally_weighted <- calculate_cumulative_log_returns(portfolio_value$Portfolio_Value)
-plot(cumulative_equally_weighted)
+cumulative_equally_weighted <- calculate_cumulative_log_returns(portfolio_equally_weighted$Portfolio_Value)
+plot_portfolio(cumulative_equally_weighted)
 
-m1
 
 ### Zero net ###
-
-source('src/metrics.R')
-ze_1 <- zero_net_portfolio_a(m3)
-ze_1 
-#ze_2 <- zero_net_portfolio(actual_returns = actual_values, predicted_returns = m2)
-
-##plot_portfolio(eq)
-#plot_two_portfolios(ze)
-
-plot_two_portfolios(c("Eq W", "M1"),cumulative_equally_weighted, ze_1)
-
-save_plot_two_portfolios(c("Eq W", "M1"),eq, ze_1, "portfolio_1_")
+ze_1 <- zero_net_portfolio_a(m1)
+ze_2 <- zero_net_portfolio_a(m2)
+ze_3 <- zero_net_portfolio_a(m3)
 
 
 
-r2(m1$Values, actual_values$Values)
+########## PLOT ##################
+Time = portfolio_equally_weighted$Date
+df_results <- data.frame(Time, ze_1, ze_2, ze_3, cumulative_equally_weighted)
+colnames(df_results) <- c("Time", "OLS-3", "Lasso", "Ridge", "Equally Weighted")
 
+df_melted <- melt(df_results, id.vars = "Time")
+
+ggplot(df_melted, aes(x = Time, y = value, color = variable)) +
+  geom_line() +
+  ggtitle("Portfolio Long only") +
+  xlab("Time") +
+  ylab("Cumulative Log Returns")
+
+
+####### Long - Short #############
+
+ze_4 <- long_short_portfolio(m1)
+ze_5 <- long_short_portfolio(m2)
+ze_6 <- long_short_portfolio(m3)
+
+########## PLOT ##################
+
+df_results_B <- data.frame(Time, ze_4, ze_5, ze_6, cumulative_equally_weighted)
+colnames(df_results_B) <- c("Time", "OLS-3", "Lasso", "Ridge", "Equally Weighted")
+
+df_melted_B <- melt(df_results_B, id.vars = "Time")
+
+ggplot(df_melted_B, aes(x = Time, y = value, color = variable)) +
+  geom_line() +
+  ggtitle("Portfolio Long-short") +
+  xlab("Time") +
+  ylab("Cumulative Log Returns")

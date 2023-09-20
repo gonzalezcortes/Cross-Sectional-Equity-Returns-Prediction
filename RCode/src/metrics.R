@@ -9,13 +9,14 @@ r2_metric <- function(predicted, actual){
 }
 
 ## Extracted from gu et al (2020)
-r2 <- function(predicted, actual, mtrain){
-    #mtrain is the mean(ytrain)
-    
-    r_squared = 1 - sum((predicted - actual)^2) / sum((actual - mtrain)^2)
-    
 
-    return(r_squared)
+r2_Gu <- function(predicted, actual, mtrain){
+  #mtrain is the mean(ytrain)
+  
+  r_squared = 1 - sum((predicted - actual)^2) / sum((actual - mtrain)^2)
+  
+  
+  return(r_squared)
 }
 
 
@@ -70,7 +71,7 @@ calculate_cumulative_log_returns_with_dates <- function(returns, dates) {
 }
 
 
-
+## 1 is the lower value and 10 is the higher
 calculate_deciles <- function(labels, returns) {
   data <- data.frame(returns)
   deciles <- lapply(data, function(x) {
@@ -84,6 +85,7 @@ calculate_deciles <- function(labels, returns) {
   
   return(deciles_df)
 }
+
 
 buy_sell <- function(pred_returns) {
   deciles <- calculate_deciles(pred_returns)
@@ -124,11 +126,11 @@ zero_net_portfolio_a <- function(predicted_returns){
   
   #predicted_returns$Date <- as.Date(predicted_returns$Date, format="%Y-%m-%d")
   
-  print(class(predicted_returns$Date[1]))
+  #print(class(predicted_returns$Date[1]))
   months <- unique(predicted_returns$Date)
-  print(class(months[1]))
+  #print(class(months[1]))
   
-  print(class(months[1]))
+  #print(class(months[1]))
   
 
   #holdings <- list(buy = list(), sell = list())
@@ -143,11 +145,14 @@ zero_net_portfolio_a <- function(predicted_returns){
     
     ### Get deciles ###
     deciles <- calculate_deciles(df_filtered$Stock, df_filtered$Prediction)
-    #print(deciles)
     
     #get buy and sell portfolio 
-    to_buy <- which(deciles$Deciles == 10)  
-    to_sell <- which(deciles$Deciles == 1)
+    to_buy <- which(deciles$Deciles == 1) #10  
+    to_sell <- which(deciles$Deciles == 10) #1
+    
+    ##print(to_buy)
+    ##print("----- to sell")
+    ##print(to_sell)
     
     holdings_long <- deciles$Stock[to_buy]
     #print(holdings_long)
@@ -158,13 +163,71 @@ zero_net_portfolio_a <- function(predicted_returns){
     #print(unique(returns_holding$Stock))
     #print(returns_holding)
     
-    print(paste0(month," - ",mean(returns_holding$Actual)))
+    #weights <- 1 / length(returns_holding)
+    #portfolio_value = sum(returns_holding$Actual * weights)
+    #a_returns <- c(a_returns, portfolio_value)
+    
+
+    
     a_returns <- c(a_returns, mean(returns_holding$Actual))
+    
+    #print(a_returns)
     
   }
   return(calculate_cumulative_log_returns(a_returns))
   #return(calculate_cumulative_log_returns(a_returns))
 }
+
+long_short_portfolio <- function(predicted_returns){
+  
+  months <- unique(predicted_returns$Date)
+  a_returns <- c()
+  
+  
+  for (i in seq_along(months)){
+    month <- months[i]
+    
+    df_filtered <- predicted_returns %>% filter(Date %in% month)
+    
+    ### Get deciles ###
+    deciles <- calculate_deciles(df_filtered$Stock, df_filtered$Prediction)
+    
+    #get buy and sell portfolio 
+    to_buy <- which(deciles$Deciles == 1) #10  
+    to_sell <- which(deciles$Deciles == 10) #1
+
+    holdings_long <- deciles$Stock[to_buy]
+    holdings_short <- deciles$Stock[to_sell]
+    #print(holdings_long)
+    
+    ### Get returns ###
+
+    returns_holding <- df_filtered  %>% filter(Stock %in% holdings_long) 
+    returns_to_sell <- df_filtered  %>% filter(Stock %in% holdings_short) 
+    #print(unique(returns_holding$Stock))
+    #print(returns_holding)
+    
+    #weights <- 1 / length(returns_holding)
+    #portfolio_value = sum(returns_holding$Actual * weights)
+    #a_returns <- c(a_returns, portfolio_value)
+    
+    returns_long <- mean(returns_holding$Actual)
+    ##print(paste0("returns_long  - ", returns_long))
+    returns_short <- mean(returns_to_sell$Actual)*-1.0
+    ##print(paste0("returns_short  - ", returns_short))
+    mm <- (returns_long + returns_short)/2.0
+    ##print(mm)
+    
+    a_returns <- c(a_returns, mm)
+    
+    #print(a_returns)
+    
+  }
+  return(calculate_cumulative_log_returns(a_returns))
+  #return(calculate_cumulative_log_returns(a_returns))
+}
+
+
 
 ######## Septiembre ###########
 

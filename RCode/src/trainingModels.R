@@ -20,7 +20,7 @@ ols_model <- function(samples){
 
     
     for (s in stocks){
-        print(s)
+        #print(s)
         train <- training_data[training_data$Stock == s, ]
         #validation <- validation_data %>% filter(Stock == s) %>% as.data.frame()
         test <- testing_data[testing_data$Stock == s, ]

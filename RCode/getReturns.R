@@ -105,3 +105,34 @@ write.csv(combined_predictions_3, "../results/combined_predictions_3_standard.cs
 
 #df_m2 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_2_predictions))
 #write.csv(df_m2, "../results/model_2_predictions.csv", row.names=TRUE)
+
+
+#### OLS-3 ####
+
+model_ols3_predictions <- list()
+df_OLS3 <- df_pivot[, c("Date","Stock","x_51", "x_9", "x_47")] #size, book-to-market, and momentum
+
+#df_pivot <- df_pivot[df_pivot$Stock %in% c(23085, 11703), ]
+#returns <- returns[returns$Stock %in% c(23085, 11703), ]
+
+for (month_index in seq(training_first, training_stop, by = 12)){
+  iterations = iterations + 1
+  print(paste0("Iteration ",iterations))
+  
+  samples <- get_samples(df_OLS3, returns, month_index, training_first, validation_step, testing_step)
+  
+  #real_values <- c(real_values, samples$testing$Y)
+  #real_dates <- c(real_dates, as.Date(samples$testing$Date))
+  
+  predictions_1 <- ols_model(samples) #first model
+  #predictions_2 <- lasso_ridge_model(samples,1) #Lasso
+  #predictions_3 <- lasso_ridge_model(samples,0) #Ridge
+  
+  model_ols3_predictions[[iterations]] <- predictions_1
+
+  rm(samples)
+}
+
+combined_predictions_1 <- do.call(rbind, model_ols3_predictions)
+write.csv(combined_predictions_1, "../results/combined_predictions_1_OLS3.csv", row.names=TRUE)
+
