@@ -40,8 +40,9 @@ df_pivot <- load_transformed_data() #load data that was already saved
 df_pivot$Date <- as.Date(as.character(df_pivot$Date), format = "%Y%m%d") #Convert to date format
 dates <- unique(df_pivot$Date)
 stocks <- unique(df_pivot$Stock)
-returns <- get_returns(dates, stocks)
+returns <- get_returns(dates, stocks) #From the exretMat.RData file
 
+df_stand <- df_pivot[, 1:96]
 
 ##### Training #####
 # Sample splitting
@@ -73,7 +74,7 @@ for (month_index in seq(training_first, training_stop, by = 12)){
     iterations = iterations + 1
     print(paste0("Iteration ",iterations))
 
-    samples <- get_samples(df_pivot, returns, month_index, training_first, validation_step, testing_step)
+    samples <- get_samples(df_stand, returns, month_index, training_first, validation_step, testing_step)
     
     #real_values <- c(real_values, samples$testing$Y)
     #real_dates <- c(real_dates, as.Date(samples$testing$Date))
@@ -97,8 +98,8 @@ combined_predictions_3 <- do.call(rbind, model_3_predictions)
 #write.csv(df_real, "../results/actual_testing_values.csv", row.names=TRUE)
 
 ##df_m1 <- data.frame("Date" = unlist(real_dates), "Stock" = unlist(real_stocks), "Values" = unlist(model_1_predictions))
-write.csv(combined_predictions_2, "../results/combined_predictions_2.csv", row.names=TRUE)
-write.csv(combined_predictions_3, "../results/combined_predictions_3.csv", row.names=TRUE)
+write.csv(combined_predictions_2, "../results/combined_predictions_2_standard.csv", row.names=TRUE)
+write.csv(combined_predictions_3, "../results/combined_predictions_3_standard.csv", row.names=TRUE)
 
 #print(r2_scores)
 
